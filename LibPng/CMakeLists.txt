@@ -51,6 +51,7 @@ else(IS_XCODE)
 endif(IS_XCODE)
 
 
+
 target_link_libraries(LibPng ${ZLIB_LDFLAGS})
 
 install(TARGETS LibPng

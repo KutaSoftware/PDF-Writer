@@ -93,6 +93,7 @@ else(IS_XCODE)
     add_library(LibTiff ${LibTiff_OBJECTS})
 endif(IS_XCODE)
 
+
 target_link_libraries(LibTiff ${ZLIB_LDFLAGS})
 
 install(TARGETS LibTiff

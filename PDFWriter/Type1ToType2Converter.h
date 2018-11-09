@@ -50,9 +50,9 @@ struct Stem
 	long mOrigin;
 	long mExtent;
 };
-
 struct StemLess
 {
+
 	bool operator( ) (const Stem& inLeft, 
 						const Stem& inRight ) const
 	{

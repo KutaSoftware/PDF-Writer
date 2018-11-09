@@ -249,6 +249,15 @@ DictionaryContext* ObjectsContext::StartDictionary()
 	return newDictionary;
 }
 
+
+DictionaryContext* ObjectsContext::StartDictionary(bool onlyRead)
+{
+    DictionaryContext* newDictionary = new DictionaryContext(this,mDictionaryStack.size(), onlyRead);
+
+    mDictionaryStack.push_back(newDictionary);
+    return newDictionary;
+}
+
 EStatusCode ObjectsContext::EndDictionary(DictionaryContext* ObjectsContext)
 {
 	if(mDictionaryStack.size() > 0)
@@ -339,6 +348,19 @@ void ObjectsContext::StartNewIndirectObject(ObjectIDType inObjectID)
 	if (IsEncrypting()) {
 		mEncryptionHelper->OnObjectStart((long long)inObjectID, 0);
 	}
+}
+
+void ObjectsContext::StartNewIndirectObject(ObjectIDType inObjectID, bool onlyRead) {
+    mReferencesRegistry.MarkObjectAsWritten(inObjectID, mOutputStream->GetCurrentPosition());
+    if (!onlyRead) {
+        mPrimitiveWriter.WriteInteger(inObjectID);
+        mPrimitiveWriter.WriteInteger(0);
+        mPrimitiveWriter.WriteKeyword(scObj);
+    }
+
+    if (IsEncrypting()) {
+        mEncryptionHelper->OnObjectStart((long long)inObjectID, 0);
+    }
 }
 
 void ObjectsContext::StartModifiedIndirectObject(ObjectIDType inObjectID)

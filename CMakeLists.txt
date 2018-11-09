@@ -27,8 +27,6 @@ if(NOT USE_BUNDLED)
     PKG_CHECK_MODULES(FREETYPE REQUIRED freetype2)
 
     if (MINGW OR FLATPAK)
-        # FIXME: Fedora's MinGW environment doesn't provide LibAesgm
-        # FIXME: Flatpak's Gnome runtime doesn't provide LibAesgm
         ADD_SUBDIRECTORY (LibAesgm)
     else (MINGW OR FLATPAK)
         FIND_PATH(LIBAESGM_INCLUDE_DIRS aescpp.h /usr/local/include/aes /usr/include/aes)

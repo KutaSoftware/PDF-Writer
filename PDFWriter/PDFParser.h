@@ -233,6 +233,7 @@ private:
 									 unsigned long inEntryWidthsSize);
 	PDFHummus::EStatusCode ReadXrefSegmentValue(IByteReader* inSource,int inEntrySize,long long& outValue);
 	PDFHummus::EStatusCode ReadXrefSegmentValue(IByteReader* inSource,int inEntrySize,ObjectIDType& outValue);
+
 	PDFHummus::EStatusCode ParsePreviousFileDirectory(LongFilePositionType inXrefPosition,
                                           XrefEntryInput* inXrefTable,
                                           ObjectIDType inXrefSize,

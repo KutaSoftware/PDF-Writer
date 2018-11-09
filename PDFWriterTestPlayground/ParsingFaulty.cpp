@@ -158,8 +158,6 @@ EStatusCode ParsingFaulty::Run(const TestConfiguration& inTestConfiguration) {
 		return status;
 	}
 
-
-
 	return status;
 }
 

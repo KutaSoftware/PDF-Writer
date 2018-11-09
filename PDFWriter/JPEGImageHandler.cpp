@@ -131,9 +131,8 @@ PDFImageXObject* JPEGImageHandler::CreateAndWriteImageXObjectFromJPGInformation(
 			TRACE_LOG("JPEGImageHandler::CreateAndWriteImageXObjectFromJPGInformation. Unexpected Error, mObjectsContext not initialized with an objects context");
 			break;
 		}
-
-		mObjectsContext->StartNewIndirectObject(inImageXObjectID);
-		DictionaryContext* imageContext = mObjectsContext->StartDictionary();
+		mObjectsContext->StartNewIndirectObject(inImageXObjectID, true);
+		DictionaryContext* imageContext = mObjectsContext->StartDictionary(true);
 	
 		// type
 		imageContext->WriteKey(scType);
@@ -206,7 +205,6 @@ PDFImageXObject* JPEGImageHandler::CreateAndWriteImageXObjectFromJPGInformation(
 		}	
 		if(status != PDFHummus::eSuccess)
 			break;
-		
 
 		PDFStream* imageStream = mObjectsContext->StartUnfilteredPDFStream(imageContext);
 
@@ -218,7 +216,7 @@ PDFImageXObject* JPEGImageHandler::CreateAndWriteImageXObjectFromJPGInformation(
 			delete imageStream;
 			break;
 		}
-	
+
 		mObjectsContext->EndPDFStream(imageStream);
 		delete imageStream;
 

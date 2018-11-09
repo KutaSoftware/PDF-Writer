@@ -35,11 +35,18 @@ _.swp
 *.opensdf
 *.cache
 
+<<<<<<< HEAD
 #XCode/OSX unwanted#
 ################
 xcode/Build
 xcode/DerivedData
 .DS_Store
+=======
+#XCode unwanted#
+################
+xcode/Build
+xcode/DerivedData
+>>>>>>> Initial commit
 
 #VSCode unswated#
 #################
@@ -56,6 +63,9 @@ jpegsr8d
 jpeg-8d
 *.gz
 Downloads
+<<<<<<< HEAD
 
 # notes etc.
 etc
+=======
+>>>>>>> Initial commit

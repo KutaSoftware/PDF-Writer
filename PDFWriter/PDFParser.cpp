@@ -411,7 +411,9 @@ EStatusCode PDFParser::ParseLastXrefPosition()
 }
 
 static const std::string scTrailer = "trailer";
+
 EStatusCode PDFParser::ParseTrailerDictionary(PDFDictionary** outTrailer)
+
 {
 
 	EStatusCode status = PDFHummus::eSuccess;
@@ -442,6 +444,7 @@ EStatusCode PDFParser::ParseTrailerDictionary(PDFDictionary** outTrailer)
 		mObjectParser.ResetReadState(aTokenizer);
 		PDFObjectCastPtr<PDFDictionary> trailerDictionary(mObjectParser.ParseNewObject());
 		if(!trailerDictionary)
+
 		{
 			status = PDFHummus::eFailure;
 			TRACE_LOG("PDFParser::ParseTrailerDictionary, failure to parse trailer dictionary");
@@ -450,6 +453,7 @@ EStatusCode PDFParser::ParseTrailerDictionary(PDFDictionary** outTrailer)
 
 		trailerDictionary->AddRef();
 		*outTrailer = trailerDictionary.GetPtr();
+
 	}while(false);
 
 	return status;
@@ -471,6 +475,7 @@ EStatusCode PDFParser::BuildXrefTableFromTable()
 
 		bool hasPrev = mTrailer->Exists("Prev");
 		if(hasPrev)
+
 		{
 			status = ParsePreviousXrefs(mTrailer.GetPtr());
 			if(status != PDFHummus::eSuccess)
@@ -480,6 +485,7 @@ EStatusCode PDFParser::BuildXrefTableFromTable()
         XrefEntryInput* extendedTable = NULL;
         ObjectIDType extendedTableSize;
 		status = ParseXrefFromXrefTable(mXrefTable,mXrefSize,mLastXrefPosition,!hasPrev, &extendedTable,&extendedTableSize);
+
 		if(status != PDFHummus::eSuccess)
 			break;
 
@@ -590,7 +596,6 @@ EStatusCode PDFParser::ParseXrefFromXrefTable(XrefEntryInput* inXrefTable,
 			// token may be either start of section or "trailer"
 			if(scTrailer == token.second)
 				break;
-
 			// parse segment start
 			ObjectIDType segmentStart = ObjectIDTypeBox(token.second);
 			
@@ -599,6 +604,7 @@ EStatusCode PDFParser::ParseXrefFromXrefTable(XrefEntryInput* inXrefTable,
 			if (currentObject != 0 || !inIsFirstXref)
 				currentObject = segmentStart;
 			
+
 			token = tokenizer.GetNextToken();
 			if(!token.first)
 			{
@@ -607,6 +613,7 @@ EStatusCode PDFParser::ParseXrefFromXrefTable(XrefEntryInput* inXrefTable,
 				break;
 			}
 			// parse segment size
+
 			if(ObjectIDTypeBox(token.second) == 0)
 				continue; // probably will never happen
 			firstNonSectionObject = currentObject + ObjectIDTypeBox(token.second);
@@ -1049,6 +1056,7 @@ EStatusCode PDFParser::ParsePreviousXrefs(PDFDictionary* inTrailer)
         XrefEntryInput* extendedTable = NULL;
         ObjectIDType extendedTableSize;
 		status = ParsePreviousFileDirectory(previousPosition->GetValue(),aTable,mXrefSize,&trailerP,&extendedTable,&extendedTableSize);
+
 		if(status != PDFHummus::eSuccess)
 			break;
 		RefCountPtr<PDFDictionary> trailer(trailerP);
@@ -1080,6 +1088,7 @@ EStatusCode PDFParser::ParsePreviousXrefs(PDFDictionary* inTrailer)
 }
 
 EStatusCode PDFParser::ParsePreviousFileDirectory(LongFilePositionType inXrefPosition,
+
 									  XrefEntryInput* inXrefTable,
 									  ObjectIDType inXrefSize,
 									  PDFDictionary** outTrailer,
@@ -1114,6 +1123,7 @@ EStatusCode PDFParser::ParsePreviousFileDirectory(LongFilePositionType inXrefPos
 			bool hasPrev = trailerDictionary->Exists("Prev");
 
 			status = ParseXrefFromXrefTable(inXrefTable,inXrefSize,inXrefPosition,!hasPrev,outExtendedTable,outExtendedTableSize);
+
 			if(status != PDFHummus::eSuccess)
 			{
 				TRACE_LOG1("PDFParser::ParseDirectory, failed to parse xref table in %ld",inXrefPosition);
@@ -1141,6 +1151,7 @@ EStatusCode PDFParser::ParsePreviousFileDirectory(LongFilePositionType inXrefPos
 			}
 
 			*outTrailer = trailerDictionary;
+
 		}
 		else if(anObject->GetType() == PDFObject::ePDFObjectInteger && ((PDFInteger*)anObject.GetPtr())->GetValue() > 0)
 		{
@@ -1246,6 +1257,7 @@ EStatusCode PDFParser::ParseFileDirectory()
 				break;
 			RefCountPtr<PDFDictionary> trailer(trailerP); // this should take care of the internally added ref...minor technicality
 			mTrailer = trailer;
+
 
 			status = BuildXrefTableFromTable();
 			if(status != PDFHummus::eSuccess)

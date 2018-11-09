@@ -158,7 +158,7 @@ EStatusCode JPEGImageParser::ReadJPEGID()
 	
 	if (status != PDFHummus::eSuccess)
 		return status;
-	
+
 	if (memcmp(mReadBuffer, scJPEGID, 2) != 0)
 		return PDFHummus::eFailure;
 	
@@ -255,6 +255,7 @@ TwoLevelStatus JPEGImageParser::ReadStreamToBuffer(unsigned long inAmountToRead,
 	EStatusCode status = ReadStreamToBuffer(inAmountToRead);
 	if (status == PDFHummus::eSuccess)
 		refReadLimit -= inAmountToRead;
+
 	return TwoLevelStatus(status, PDFHummus::eSuccess);
 }
 TwoLevelStatus JPEGImageParser::ReadLongValue(
@@ -269,6 +270,7 @@ TwoLevelStatus JPEGImageParser::ReadLongValue(
 	if (status == PDFHummus::eSuccess)
 		refReadLimit -= 4;
 	return TwoLevelStatus(status, PDFHummus::eSuccess);
+
 }
 
 EStatusCode JPEGImageParser::SkipStream(unsigned long inSkip, unsigned long& refReadLimit)
@@ -276,6 +278,7 @@ EStatusCode JPEGImageParser::SkipStream(unsigned long inSkip, unsigned long& ref
 	if (refReadLimit < inSkip)
 		return PDFHummus::eFailure;
 	SkipStream(inSkip);
+
 	refReadLimit -= inSkip;
 	return PDFHummus::eSuccess;
 }
@@ -455,7 +458,6 @@ EStatusCode JPEGImageParser::ReadExifData(JPEGImageInformation& outImageInformat
 		else
 			outImageInformation.ExifUnit = 2;
 
-
 		unsigned long currentOffset = 0;																					
 		if(ifdOffset > 8) 																							
 		{																													
@@ -468,6 +470,7 @@ EStatusCode JPEGImageParser::ReadExifData(JPEGImageInformation& outImageInformat
 		{																													
 			currentOffset = ifdOffset + ifdDirectorySize * 12 + 2;
 		}																													
+
 		unsigned long tempOffset = currentOffset;
 		status = GetResolutionFromExif(outImageInformation, xResolutionOffset, yResolutionOffset, tempOffset, !isBigEndian);
 		if (status != PDFHummus::eSuccess)
