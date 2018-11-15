@@ -70,6 +70,9 @@ set(LibJpeg_OBJECTS $<TARGET_OBJECTS:LibJpeg_OBJLIB>)
 set(LibJpeg_OBJECTS $<TARGET_OBJECTS:LibJpeg_OBJLIB> PARENT_SCOPE)
 add_library(LibJpeg ${LibJpeg_OBJECTS})
 
+set_target_properties(LibJpeg_OBJLIB PROPERTIES COMPILE_FLAGS -fPIC)
+set_target_properties(LibJpeg PROPERTIES COMPILE_FLAGS -fPIC)
+
 install(TARGETS LibJpeg
     RUNTIME DESTINATION bin COMPONENT dependencies
     ARCHIVE DESTINATION lib${LIB_SUFFIX} COMPONENT dependencies

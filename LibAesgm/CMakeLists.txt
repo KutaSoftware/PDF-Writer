@@ -29,6 +29,9 @@ set(LibAesgm_OBJECTS $<TARGET_OBJECTS:LibAesgm_OBJLIB>)
 set(LibAesgm_OBJECTS $<TARGET_OBJECTS:LibAesgm_OBJLIB> PARENT_SCOPE)
 add_library(LibAesgm ${LibAesgm_OBJECTS})
 
+set_target_properties(LibAesgm_OBJLIB PROPERTIES COMPILE_FLAGS -fPIC)
+set_target_properties(LibAesgm PROPERTIES COMPILE_FLAGS -fPIC)
+
 install(TARGETS LibAesgm
     RUNTIME DESTINATION bin COMPONENT dependencies
     ARCHIVE DESTINATION lib${LIB_SUFFIX} COMPONENT dependencies

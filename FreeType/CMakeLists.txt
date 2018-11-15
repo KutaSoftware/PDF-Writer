@@ -71,6 +71,9 @@ set(FreeType_OBJECTS $<TARGET_OBJECTS:FreeType_OBJLIB> PARENT_SCOPE)
 
 add_library(FreeType ${FreeType_OBJECTS})
 
+set_target_properties(FreeType_OBJLIB PROPERTIES COMPILE_FLAGS -fPIC)
+set_target_properties(FreeType PROPERTIES COMPILE_FLAGS -fPIC)
+
 install(TARGETS FreeType
     RUNTIME DESTINATION bin COMPONENT dependencies
     ARCHIVE DESTINATION lib${LIB_SUFFIX} COMPONENT dependencies

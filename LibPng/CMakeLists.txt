@@ -39,6 +39,8 @@ set(LibPng_OBJECTS $<TARGET_OBJECTS:LibPng_OBJLIB>)
 set(LibPng_OBJECTS $<TARGET_OBJECTS:LibPng_OBJLIB> PARENT_SCOPE)
 add_library(LibPng ${LibPng_OBJECTS})
 
+set_target_properties(LibPng_OBJLIB PROPERTIES COMPILE_FLAGS -fPIC)
+set_target_properties(LibPng PROPERTIES COMPILE_FLAGS -fPIC)
 
 target_link_libraries(LibPng ${ZLIB_LDFLAGS})
 
