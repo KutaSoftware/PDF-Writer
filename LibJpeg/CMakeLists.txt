@@ -76,6 +76,9 @@ else(IS_XCODE)
 endif(IS_XCODE)
 
 
+set_target_properties(LibJpeg_OBJLIB PROPERTIES COMPILE_FLAGS -fPIC)
+set_target_properties(LibJpeg PROPERTIES COMPILE_FLAGS -fPIC)
+
 install(TARGETS LibJpeg
     RUNTIME DESTINATION bin COMPONENT dependencies
     ARCHIVE DESTINATION lib${LIB_SUFFIX} COMPONENT dependencies

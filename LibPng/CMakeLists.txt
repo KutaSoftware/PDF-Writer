@@ -51,6 +51,8 @@ else(IS_XCODE)
 endif(IS_XCODE)
 
 
+set_target_properties(LibPng_OBJLIB PROPERTIES COMPILE_FLAGS -fPIC)
+set_target_properties(LibPng PROPERTIES COMPILE_FLAGS -fPIC)
 
 target_link_libraries(LibPng ${ZLIB_LDFLAGS})
 
