@@ -55,3 +55,5 @@ jpegsr8d
 jpeg-8d
 *.gz
 Downloads
+
+build/*
