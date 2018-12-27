@@ -88,6 +88,8 @@ set(LibTiff_OBJECTS $<TARGET_OBJECTS:LibTiff_OBJLIB>)
 set(LibTiff_OBJECTS $<TARGET_OBJECTS:LibTiff_OBJLIB> PARENT_SCOPE)
 add_library(LibTiff ${LibTiff_OBJECTS})
 
+set_target_properties(LibTiff_OBJLIB PROPERTIES COMPILE_FLAGS -fPIC)
+set_target_properties(LibTiff PROPERTIES COMPILE_FLAGS -fPIC)
 
 target_link_libraries(LibTiff ${ZLIB_LDFLAGS})
 
