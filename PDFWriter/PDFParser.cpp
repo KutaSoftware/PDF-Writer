@@ -45,6 +45,8 @@
 #include "InputDCTDecodeStream.h"
 #include "ArrayOfInputStreamsStream.h"
 
+#include "InputBufferedStream.h"
+
 #include  <algorithm>
 using namespace PDFHummus;
 
@@ -2004,6 +2006,12 @@ EStatusCodeAndIByteReader PDFParser::CreateFilterForStream(IByteReader* inStream
 
 			result = mDecryptionHelper.CreateDecryptionFilterForStream(inPDFStream, inStream, cryptFilterName->GetValue());
 		}
+        else if (inFilterName->GetValue() == "CCITTFaxDecode")
+        {
+            //TODO: decode stream. This return encoded buffer data. The data can be decoded usign libtiff (we need to create a new IByteReader to CCITT image data)
+            result = new InputBufferedStream((IByteReaderWithPosition*)inStream);
+            TRACE_LOG("PDFParser::CreateFilterForStream, CCITTFaxDecode pending");
+        }
 		else if(mParserExtender)
 		{
 			result = mParserExtender->CreateFilterForStream(inStream,inFilterName,inDecodeParams, inPDFStream);
