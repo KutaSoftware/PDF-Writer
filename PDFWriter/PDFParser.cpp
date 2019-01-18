@@ -2006,7 +2006,7 @@ EStatusCodeAndIByteReader PDFParser::CreateFilterForStream(IByteReader* inStream
 
 			result = mDecryptionHelper.CreateDecryptionFilterForStream(inPDFStream, inStream, cryptFilterName->GetValue());
 		}
-        else if (inFilterName->GetValue() == "CCITTFaxDecode")
+        else if (inFilterName->GetValue() == "CCITTFaxDecode" || inFilterName->GetValue() == "RunLengthDecode")
         {
             //TODO: decode stream. This return encoded buffer data. The data can be decoded usign libtiff (we need to create a new IByteReader to CCITT image data)
             result = new InputBufferedStream((IByteReaderWithPosition*)inStream);
