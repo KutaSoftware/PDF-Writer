@@ -739,7 +739,7 @@ EStatusCode ObjectsContext::WriteXrefStream(DictionaryContext* inDictionaryConte
 
     } 
     while (false);
-
+    delete aStream;
     return status;
 }
 
