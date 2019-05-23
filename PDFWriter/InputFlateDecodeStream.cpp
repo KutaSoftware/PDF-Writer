@@ -93,8 +93,6 @@ static bool isError(int inflateResult)
 			return false;
 	}
 }
-
-
 IOBasicTypes::LongBufferSizeType InputFlateDecodeStream::Read(IOBasicTypes::Byte* inBuffer,IOBasicTypes::LongBufferSizeType inBufferSize)
 {
 	if(mCurrentlyEncoding)
@@ -136,6 +134,7 @@ IOBasicTypes::LongBufferSizeType InputFlateDecodeStream::DecodeBufferAndRead(con
 		{
 			if(mSourceStream->Read(&mBuffer,1) != 1)
 			{
+                TRACE_LOG("InputFlateDecodeStream::DecodeBufferAndRead, failed to read from source stream");
 				if (mSourceStream->NotEnded()) {
 					TRACE_LOG("InputFlateDecodeStream::DecodeBufferAndRead, failed to read from source stream");
 					inflateResult = Z_STREAM_ERROR;
@@ -145,7 +144,6 @@ IOBasicTypes::LongBufferSizeType InputFlateDecodeStream::DecodeBufferAndRead(con
 					inflateResult = Z_STREAM_END;
 				}
 				inflateEnd(mZLibState);
-
 				mCurrentlyEncoding = false;
 				break;
 			}
@@ -157,7 +155,6 @@ IOBasicTypes::LongBufferSizeType InputFlateDecodeStream::DecodeBufferAndRead(con
 			{
 				inflateResult = inflate(mZLibState,Z_NO_FLUSH);
 				if(isError(inflateResult))
-
 				{
 					TRACE_LOG1("InputFlateDecodeStream::DecodeBufferAndRead, failed to read zlib information. returned error code = %d",inflateResult);
 					inflateEnd(mZLibState);
@@ -172,7 +169,6 @@ IOBasicTypes::LongBufferSizeType InputFlateDecodeStream::DecodeBufferAndRead(con
 	// should be that at the last buffer we'll get here a nice Z_STREAM_END
 	mEndOfCompressionEoncountered = (Z_STREAM_END == inflateResult) || isError(inflateResult);
 	if(Z_OK == inflateResult || Z_STREAM_END == inflateResult)
-
 		return inSize - mZLibState->avail_out;
 	else
 		return 0;
