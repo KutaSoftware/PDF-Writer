@@ -52,6 +52,9 @@ PDFModifiedPage::PDFModifiedPage(PDFWriter* inWriter,unsigned long inPageIndex,b
 
 PDFModifiedPage::~PDFModifiedPage(void)
 {
+    for (PDFFormXObjectVector::iterator it = mContenxts.begin(); it != mContenxts.end(); ++it) {
+        delete *it;
+    }
 }
 
 AbstractContentContext* PDFModifiedPage::StartContentContext()
@@ -329,6 +332,8 @@ PDFHummus::EStatusCode PDFModifiedPage::WritePage()
 			primitivesWriter.WriteKeyword("q");
 			objectContext.EndPDFStream(newStream);
 
+			delete newStream;
+
 		}
 
 		// last but not least, create the actual content stream object, placing the form
@@ -357,6 +362,9 @@ PDFHummus::EStatusCode PDFModifiedPage::WritePage()
 		}
 
 		objectContext.EndPDFStream(newStream);
+
+        delete newStream;
+        delete copyingContext;
 	} while (false);
 
 	return status;
