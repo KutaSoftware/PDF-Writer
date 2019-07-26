@@ -7,7 +7,7 @@
  * (Version 0.96 Copyright (c) 1996, 1997 Andreas Dilger)
  * (Version 0.88 Copyright (c) 1995, 1996 Guy Eric Schalnat, Group 42, Inc.)
  *
- * This code is released under the libpng license (See LICENSE, below)
+ * This code is released under the libpng license (See original_LICENSE, below)
  *
  * Authors and maintainers:
  *   libpng versions 0.71, May 1995, through 0.88, January 1996: Guy Schalnat
@@ -18,7 +18,7 @@
  */
 
 /*
- * COPYRIGHT NOTICE, DISCLAIMER, and LICENSE:
+ * COPYRIGHT NOTICE, DISCLAIMER, and original_LICENSE:
  *
  * If you modify libpng you may insert additional notices immediately following
  * this sentence.
@@ -118,7 +118,7 @@
  * source code in a product, acknowledgment is not required but would be
  * appreciated.
  *
- * END OF COPYRIGHT NOTICE, DISCLAIMER, and LICENSE.
+ * END OF COPYRIGHT NOTICE, DISCLAIMER, and original_LICENSE.
  *
  * TRADEMARK:
  *
