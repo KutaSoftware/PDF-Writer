@@ -5,11 +5,11 @@
 /*    Amiga-specific FreeType low-level system interface (body).           */
 /*                                                                         */
 /*  Copyright 1996-2001, 2002, 2005, 2006, 2007, 2010 by                   */
-/*  David Turner, Robert Wilhelm, Werner Lemberg and Detlef Würkner.       */
+/*  David Turner, Robert Wilhelm, Werner Lemberg and Detlef Wï¿½rkner.       */
 /*                                                                         */
 /*  This file is part of the FreeType project, and may only be used,       */
 /*  modified, and distributed under the terms of the FreeType project      */
-/*  license, LICENSE.TXT.  By continuing to use, modify, or distribute     */
+/*  license, original_LICENSE.TXT.  By continuing to use, modify, or distribute     */
 /*  this file you indicate that you have read the license and              */
 /*  understand and accept it fully.                                        */
 /*                                                                         */
@@ -26,7 +26,7 @@
 
   /*************************************************************************/
   /*                                                                       */
-  /* Maintained by Detlef Würkner <TetiSoft@apg.lahn.de>                   */
+  /* Maintained by Detlef Wï¿½rkner <TetiSoft@apg.lahn.de>                   */
   /*                                                                       */
   /* Based on the original ftsystem.c,                                     */
   /* modified to avoid fopen(), fclose(), fread(), fseek(), ftell(),       */
