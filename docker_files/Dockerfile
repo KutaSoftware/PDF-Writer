@@ -24,5 +24,9 @@ RUN rm -f /usr/bin/python && ln -s /usr/bin/python3.6 /usr/bin/python
 COPY --from=build /pip-packages/ /pip-packages/
 RUN python3.6 -m pip install --no-index --find-links=/pip-packages/ /pip-packages/* && rm -rf /pip-packages
 
-ENTRYPOINT ["/entrypoint.sh"]
+COPY docker_files/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+ENV LANG C.UTF-8
+ENV LC_ALL C.UTF-8
+CMD /entrypoint.sh
 
