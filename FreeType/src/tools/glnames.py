@@ -11,7 +11,7 @@
 #
 # This file is part of the FreeType project, and may only be used, modified,
 # and distributed under the terms of the FreeType project license,
-# LICENSE.TXT.  By continuing to use, modify, or distribute this file you
+# original_LICENSE.TXT.  By continuing to use, modify, or distribute this file you
 # indicate that you have read the license and understand and accept it
 # fully.
 
@@ -5272,7 +5272,7 @@ def main():
   write( "/*                                                                         */\n" )
   write( "/*  This file is part of the FreeType project, and may only be used,       */\n" )
   write( "/*  modified, and distributed under the terms of the FreeType project      */\n" )
-  write( "/*  license, LICENSE.TXT.  By continuing to use, modify, or distribute     */\n" )
+  write( "/*  license, original_LICENSE.TXT.  By continuing to use, modify, or distribute     */\n" )
   write( "/*  this file you indicate that you have read the license and              */\n" )
   write( "/*  understand and accept it fully.                                        */\n" )
   write( "/*                                                                         */\n" )
