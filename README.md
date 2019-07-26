@@ -1,8 +1,46 @@
 # PDFWriter
 
-This repository contains Gradiant's version of PDFWriter library. Versions of this library are stored in
-[Nexus](https://repo.gradiant.org/nexus/#browse/browse:raw-dataset-biometrics:pdfwriter).
+This repository contains Gradiant´s version of PDFWriter library. Versions of this library are stored in [Nexus](https://repo.gradiant.org/nexus/#browse/browse:raw-dataset-biometrics:pdfwriter).
 
-Any new version uploaded to Nexus must be built inside a Docker container following these instructions:
+## Requirements
+* gradiant-bowie==0.7.1
 
+## Build
+~~~
+bowie -b
+~~~
 
+## Generate new version for Nexus and upload it
+
+### Build the docker image
+You can skip this step if you already have it.
+You must define the environment variable 'NEXUS_CREDENTIALS=ldap_user:ldap_password'. Then:
+
+~~~
+docker build -t pdfwriter -f docker/Dockerfile --build-arg NEXUS_CREDENTIALS=$NEXUS_CREDENTIALS .
+~~~
+
+### Tag you commit
+Assign a new version tag  (with format "vX.Y.Z") to the current commit
+~~~
+git tag vX.Y.Z
+~~~
+
+### Run the container
+You must define the environment variable 'NEXUS_CREDENTIALS=ldap_user:ldap_password'. Then:
+~~~
+ docker run -e NEXUS_CREDENTIALS=$NEXUS_CREDENTIALS -v $PWD:/pdfwriter -it pdfwriter
+~~~
+The new version should be uploaded to Nexus.
+## Build for local use
+### With bowie
+~~~
+bowie -b
+~~~
+### With cmake
+~~~
+mkdir build
+cd build
+cmake ..
+make -j4
+~~~

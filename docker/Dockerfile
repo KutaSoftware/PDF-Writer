@@ -9,5 +9,20 @@ RUN pip download --index-url https://${NEXUS_CREDENTIALS}@intranet.gradiant.org/
 FROM ubuntu:18.04
 LABEL maintainer="Valida Support <valida.support@gradiant.org>"
 
+COPY --from=build /pip-packages/ /pip-packages/
 RUN apt-get update && \
-    apt-get install -y zip build-essential cmake gcc
+    apt-get install -y zip build-essential cmake gcc git curl
+
+RUN apt-get install -y software-properties-common && \
+    add-apt-repository ppa:deadsnakes/ppa && \
+    apt-get update && \
+    apt-get -y install python3.6 python3.6-dev python3.6-distutils&& \
+    apt-get autoremove
+
+RUN curl https://bootstrap.pypa.io/get-pip.py | python3.6
+RUN rm -f /usr/bin/python && ln -s /usr/bin/python3.6 /usr/bin/python
+COPY --from=build /pip-packages/ /pip-packages/
+RUN python3.6 -m pip install --no-index --find-links=/pip-packages/ /pip-packages/* && rm -rf /pip-packages
+
+ENTRYPOINT ["/entrypoint.sh"]
+
