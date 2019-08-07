@@ -1,7 +1,7 @@
 @Library('bowie-jenkins-pipeline-lib') _
 bowiePipeline{
     cloud = 'kubernetes-ms'
-    dockerImage = 'valida-ci:2.0.1'
+    dockerImage = 'valida-ci:2.1.0'
     registryUrl = 'repo.gradiant.org:9026'
     registryCredentialsId = 'Nexus'
     requestMemory = '1G'
