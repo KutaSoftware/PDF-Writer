@@ -61,11 +61,25 @@ PDFParser::PDFParser(void)
                                     // declared size. but i would like to allow files that do extend. as this is incompatible with the specs, i'll make
                                     // this boolean dendent. i will sometimes make it public so ppl can actually modify this policy. for now, it's internal
 	mObjectParser.SetDecryptionHelper(&mDecryptionHelper);
+
+    mConfiguration.decodeDCT = true; //
 }
 
 PDFParser::~PDFParser(void)
 {
 	ResetParser();
+}
+
+void PDFParser::DCTDecodeEnable(){
+    mConfiguration.decodeDCT = true;
+}
+
+void PDFParser::DCTDecodeDisable(){
+    mConfiguration.decodeDCT = false;
+}
+
+bool PDFParser::DCTDecodeStatus(){
+    return mConfiguration.decodeDCT;
 }
 
 void PDFParser::ResetParser()
@@ -2022,7 +2036,12 @@ EStatusCodeAndIByteReader PDFParser::CreateFilterForStream(IByteReader* inStream
 #ifndef PDFHUMMUS_NO_DCT
         else if(inFilterName->GetValue() == "DCTDecode")
         {
-            result = new InputDCTDecodeStream(inStream);
+            if(DCTDecodeStatus()){
+                result = new InputDCTDecodeStream(inStream);
+            }
+            else {
+                result = inStream;
+            }
         }
 #endif
 		else if (inFilterName->GetValue() == "Crypt")
