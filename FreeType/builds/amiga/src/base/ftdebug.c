@@ -5,11 +5,11 @@
 /*    Debugging and logging component (body).                              */
 /*                                                                         */
 /*  Copyright 1996-2001, 2002, 2004, 2005 by                               */
-/*  David Turner, Robert Wilhelm, Werner Lemberg and Detlef Würkner.       */
+/*  David Turner, Robert Wilhelm, Werner Lemberg and Detlef Wï¿½rkner.       */
 /*                                                                         */
 /*  This file is part of the FreeType project, and may only be used,       */
 /*  modified, and distributed under the terms of the FreeType project      */
-/*  license, LICENSE.TXT.  By continuing to use, modify, or distribute     */
+/*  license, original_LICENSE.TXT.  By continuing to use, modify, or distribute     */
 /*  this file you indicate that you have read the license and              */
 /*  understand and accept it fully.                                        */
 /*                                                                         */

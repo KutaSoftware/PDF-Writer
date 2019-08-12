@@ -69,6 +69,11 @@ struct ObjectStreamHeaderEntry
 	LongFilePositionType mObjectOffset;
 };
 
+struct PdfParserExtendedConfiguration
+{
+    bool decodeDCT;
+};
+
 typedef std::map<ObjectIDType,ObjectStreamHeaderEntry*> ObjectIDTypeToObjectStreamHeaderEntryMap;
 
 class PDFParser
@@ -76,6 +81,11 @@ class PDFParser
 public:
 	PDFParser(void);
 	virtual ~PDFParser(void);
+
+    // Disable and enable DCT decoding to avoid double compression when extracting images
+    void DCTDecodeEnable();
+    void DCTDecodeDisable();
+    bool DCTDecodeStatus();
 
 	// sets the stream to parse, then parses for enough information to be able
 	// to parse objects later
@@ -166,6 +176,7 @@ public:
     IByteReaderWithPosition* GetParserStream();
     
 private:
+    PdfParserExtendedConfiguration mConfiguration;
 	PDFObjectParser mObjectParser;
 	DecryptionHelper mDecryptionHelper;
 	IByteReaderWithPosition* mStream;
