@@ -35,7 +35,7 @@ endif(NOT PDFHUMMUS_NO_PNG)
 
 
 
-add_library (PDFWriter_OBJLIB OBJECT
+add_library (PDFWriter_OBJLIB
 
 #sources
 AbstractContentContext.cpp
