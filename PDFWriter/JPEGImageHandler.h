@@ -81,6 +81,7 @@ public:
     // that PDFHummus will use if asked to place "as is"
     DoubleAndDoublePair GetImageDimensions(const JPEGImageInformation& inJPGImageInformation);
 	int GetColorComponents(const JPEGImageInformation& inJPGImageInformation);
+
 public:
 	JPEGImageInformation mNullInformation;
 	StringToJPEGImageInformationMap mImagesInformationMap;

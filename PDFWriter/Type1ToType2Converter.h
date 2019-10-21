@@ -50,6 +50,7 @@ struct Stem
 	long mOrigin;
 	long mExtent;
 };
+
 struct StemLess
 {
 

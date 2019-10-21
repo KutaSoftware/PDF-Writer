@@ -109,7 +109,6 @@ public:
 	ObjectIDType StartNewIndirectObject();
 	// override for objects that already have been allocated in advance, and have an object ID
 	void StartNewIndirectObject(ObjectIDType inObjectID);
-
 	void StartNewIndirectObject(ObjectIDType inObjectID, bool onlyRead);
 	void EndIndirectObject();
 

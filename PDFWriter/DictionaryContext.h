@@ -37,6 +37,7 @@ class DictionaryContext
 public:
 	DictionaryContext(ObjectsContext* inObjectsContext,size_t inIndentLevel);
     DictionaryContext(ObjectsContext* inObjectsContext,size_t inIndentLevel, bool onlyRead);
+
 	~DictionaryContext(void);
 
 	PDFHummus::EStatusCode WriteKey(const std::string& inKey);

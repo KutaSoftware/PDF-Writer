@@ -248,8 +248,6 @@ DictionaryContext* ObjectsContext::StartDictionary()
 	mDictionaryStack.push_back(newDictionary);
 	return newDictionary;
 }
-
-
 DictionaryContext* ObjectsContext::StartDictionary(bool onlyRead)
 {
     DictionaryContext* newDictionary = new DictionaryContext(this,mDictionaryStack.size(), onlyRead);

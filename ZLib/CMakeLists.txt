@@ -45,6 +45,7 @@ else(IS_XCODE)
     add_library(Zlib ${Zlib_OBJECTS})
 endif(IS_XCODE)
 
+
 set_target_properties(Zlib_OBJLIB PROPERTIES COMPILE_FLAGS -fPIC)
 set_target_properties(Zlib PROPERTIES COMPILE_FLAGS -fPIC)
 

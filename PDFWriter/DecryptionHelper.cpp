@@ -368,14 +368,11 @@ bool DecryptionHelper::IsDecrypting() {
 std::string DecryptionHelper::DecryptString(const std::string& inStringToDecrypt) {
 	if (!IsDecrypting() || !mXcryptStrings)
 		return inStringToDecrypt;
-
 	std::auto_ptr<IByteReader> pDecryptStream(CreateDecryptionReader(new InputStringStream(inStringToDecrypt), mXcryptStrings->GetCurrentObjectKey(), mXcryptStrings->IsUsingAES()));
 	if (pDecryptStream.get()) {
 		OutputStringBufferStream outputStream;
 		OutputStreamTraits traits(&outputStream);
 		traits.CopyToOutputStream(pDecryptStream.get());
-
-
 		return outputStream.ToString();
 	}
 	else
@@ -448,7 +445,6 @@ XCryptionCommon* DecryptionHelper::GetCryptForStream(PDFStreamInput* inStream) {
 void DecryptionHelper::OnObjectEnd(PDFObject* inObject) {
 	if (inObject == NULL)
 		return;
-	
 
 	// for streams, retain the encryption key with them, so i can later decrypt them when needed
 	if ((inObject->GetType() == PDFObject::ePDFObjectStream) && IsDecrypting()) {

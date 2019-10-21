@@ -68,7 +68,6 @@ jversion.h
 
 set(LibJpeg_OBJECTS $<TARGET_OBJECTS:LibJpeg_OBJLIB>)
 set(LibJpeg_OBJECTS $<TARGET_OBJECTS:LibJpeg_OBJLIB> PARENT_SCOPE)
-
 if(IS_XCODE)
     add_library(LibJpeg ${LibJpeg_OBJECTS} jutils.c)
 else(IS_XCODE)

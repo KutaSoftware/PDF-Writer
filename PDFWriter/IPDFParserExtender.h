@@ -31,3 +31,4 @@ public:
 
 	virtual void OnObjectEnd(PDFObject* inObject) = 0;
 };
+

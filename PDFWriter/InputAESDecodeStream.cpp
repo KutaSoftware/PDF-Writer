@@ -139,6 +139,7 @@ LongBufferSizeType InputAESDecodeStream::Read(IOBasicTypes::Byte* inBuffer, Long
 					// Gal: one can find out here that the next block is actually empty...that's not gonna be great for
 					// NotEnded + read of 1 byte....
 
+
 				}
 			}
 		}
@@ -146,3 +147,4 @@ LongBufferSizeType InputAESDecodeStream::Read(IOBasicTypes::Byte* inBuffer, Long
 
 	return inSize - left;
 }
+

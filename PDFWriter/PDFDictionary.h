@@ -25,11 +25,9 @@
 
 #include <map>
 
-
-
-
 struct PDFNameLess
 {
+
 	bool operator( ) (const PDFName* left, 
 						const PDFName* right ) const
 	{

@@ -202,8 +202,9 @@ private:
 
 	PDFHummus::EStatusCode ParseHeaderLine();
 	PDFHummus::EStatusCode ParseEOFLine();
-	PDFHummus::EStatusCode ParseLastXrefPosition();
+    PDFHummus::EStatusCode ParseLastXrefPosition();
 	PDFHummus::EStatusCode ParseTrailerDictionary(PDFDictionary** outTrailer);
+
 	PDFHummus::EStatusCode BuildXrefTableFromTable();
 	PDFHummus::EStatusCode DetermineXrefSize();
 	PDFHummus::EStatusCode InitializeXref();

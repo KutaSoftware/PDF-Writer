@@ -75,7 +75,6 @@ else(IS_XCODE)
     add_library(FreeType ${FreeType_OBJECTS})
 endif(IS_XCODE)
 
-
 set_target_properties(FreeType_OBJLIB PROPERTIES COMPILE_FLAGS -fPIC)
 set_target_properties(FreeType PROPERTIES COMPILE_FLAGS -fPIC)
 
