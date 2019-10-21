@@ -206,7 +206,6 @@ PDFImageXObject* JPEGImageHandler::CreateAndWriteImageXObjectFromJPGInformation(
 		if(status != PDFHummus::eSuccess)
 			break;
 
-
 		PDFStream* imageStream = mObjectsContext->StartUnfilteredPDFStream(imageContext);
 
 		OutputStreamTraits outputTraits(imageStream->GetWriteStream());
@@ -522,7 +521,6 @@ PDFFormXObject* JPEGImageHandler::CreateFormXObjectFromJPGStream(IByteReaderWith
 
 PDFFormXObject* JPEGImageHandler::CreateFormXObjectFromJPGStream(IByteReaderWithPosition* inJPGStream,ObjectIDType inFormXObjectID)
 {
-
 	PDFFormXObject* imageFormXObject = NULL;
 	PDFImageXObject* imageXObject = NULL;
 

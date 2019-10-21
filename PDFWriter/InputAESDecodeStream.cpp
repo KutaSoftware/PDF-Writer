@@ -136,6 +136,10 @@ LongBufferSizeType InputAESDecodeStream::Read(IOBasicTypes::Byte* inBuffer, Long
 					mHitEnd = true; // should be 0. 
 					// now we know that next block is the final one, and can consider padding (using min for safety)
 					mReadBlockSize = AES_BLOCK_SIZE - std::min<size_t>(mOut[AES_BLOCK_SIZE - 1], AES_BLOCK_SIZE);
+					// Gal: one can find out here that the next block is actually empty...that's not gonna be great for
+					// NotEnded + read of 1 byte....
+
+
 				}
 			}
 		}
@@ -143,3 +147,4 @@ LongBufferSizeType InputAESDecodeStream::Read(IOBasicTypes::Byte* inBuffer, Long
 
 	return inSize - left;
 }
+

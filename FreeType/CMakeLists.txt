@@ -69,7 +69,11 @@ include/ft2build.h
 set(FreeType_OBJECTS $<TARGET_OBJECTS:FreeType_OBJLIB>)
 set(FreeType_OBJECTS $<TARGET_OBJECTS:FreeType_OBJLIB> PARENT_SCOPE)
 
-add_library(FreeType ${FreeType_OBJECTS})
+if(IS_XCODE)
+    add_library(FreeType ${FreeType_OBJECTS} src/smooth/smooth.c)
+else(IS_XCODE)
+    add_library(FreeType ${FreeType_OBJECTS})
+endif(IS_XCODE)
 
 set_target_properties(FreeType_OBJLIB PROPERTIES COMPILE_FLAGS -fPIC)
 set_target_properties(FreeType PROPERTIES COMPILE_FLAGS -fPIC)
