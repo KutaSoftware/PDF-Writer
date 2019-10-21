@@ -2459,5 +2459,6 @@ PDFObject* PDFDocumentHandler::FindPageResources(PDFParser* inParser, PDFDiction
 			return FindPageResources(inParser,parentDict.GetPtr());
 		}
 		
-	}	
+    }
 }
+

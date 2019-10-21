@@ -35,7 +35,8 @@ endif(NOT PDFHUMMUS_NO_PNG)
 
 
 
-add_library (PDFWriter 
+add_library (PDFWriter_OBJLIB OBJECT
+
 #sources
 AbstractContentContext.cpp
 AbstractWrittenFont.cpp
@@ -112,6 +113,8 @@ PageTree.cpp
 ParsedPrimitiveHelper.cpp
 PDFArray.cpp
 PDFBoolean.cpp
+PDFCosArray.cpp
+PDFCosDict.cpp
 PDFDate.cpp
 PDFDictionary.cpp
 PDFDocEncoding.cpp
@@ -294,6 +297,8 @@ PageTree.h
 ParsedPrimitiveHelper.h
 PDFArray.h
 PDFBoolean.h
+PDFCosArray.h
+PDFCosDict.h
 PDFDate.h
 PDFDictionary.h
 PDFDocEncoding.h
@@ -369,7 +374,17 @@ WrittenFontTrueType.h
 XCryptionCommon.h
 XObjectContentContext.h
 )
-target_link_libraries(PDFWriter ${LIBAESGM_LDFLAGS} ${LIBJPEG_LDFLAGS} ${ZLIB_LDFLAGS} ${LIBTIFF_LDFLAGS} ${FREETYPE_LDFLAGS})
+
+set(PDFWriter_OBJECTS $<TARGET_OBJECTS:PDFWriter_OBJLIB>)
+set(PDFWriter_OBJECTS $<TARGET_OBJECTS:PDFWriter_OBJLIB> PARENT_SCOPE)
+if(IS_XCODE)
+    add_library(PDFWriter ${PDFWriter_OBJECTS} XObjectContentContext.cpp)
+else(IS_XCODE)
+    add_library(PDFWriter ${PDFWriter_OBJECTS})
+endif(IS_XCODE)
+
+target_link_libraries(PDFWriter ${LIBAESGM_LDFLAGS} ${LIBJPEG_LDFLAGS} ${ZLIB_LDFLAGS} ${LIBTIFF_LDFLAGS} ${FREETYPE_LDFLAGS} ${LIBPNG_LDFLAGS})
+
 set_target_properties(PDFWriter PROPERTIES VERSION ${PDFWRITER_LIB_VERSION} SOVERSION ${PDFWRITER_SO_VERSION})
 
 set_target_properties(PDFWriter PROPERTIES COMPILE_FLAGS -fPIC)
@@ -379,11 +394,28 @@ install(TARGETS PDFWriter
     ARCHIVE DESTINATION lib${LIB_SUFFIX} COMPONENT libraries
     LIBRARY DESTINATION lib${LIB_SUFFIX} COMPONENT libraries
 )
+
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     DESTINATION include
     FILES_MATCHING
     PATTERN "*.h"
 )
+
+if(CREATE_PDFWRITER_ALL)
+    set(ALL_OBJECTS ${PDFWriter_OBJECTS} ${FreeType_OBJECTS} ${LibAesgm_OBJECTS} ${LibJpeg_OBJECTS} ${LibTiff_OBJECTS} ${Zlib_OBJECTS} ${LibPng_OBJECTS})
+
+    if(IS_XCODE)
+        add_library(PDFWriterAll ${ALL_OBJECTS} XObjectContentContext.cpp)
+    else(IS_XCODE)
+        add_library(PDFWriterAll ${ALL_OBJECTS})
+    endif(IS_XCODE)
+    
+    install(TARGETS PDFWriterAll
+        RUNTIME DESTINATION bin COMPONENT libraries
+        ARCHIVE DESTINATION lib${LIB_SUFFIX} COMPONENT libraries
+        LIBRARY DESTINATION lib${LIB_SUFFIX} COMPONENT libraries
+    )
+endif(CREATE_PDFWRITER_ALL)
 
 # groups definitions
 source_group("Document Context Level" FILES
@@ -612,6 +644,10 @@ PDFArray.cpp
 PDFArray.h
 PDFBoolean.cpp
 PDFBoolean.h
+PDFCosArray.cpp
+PDFCosArray.h
+PDFCosDict.cpp
+PDFCosDict.h
 PDFDictionary.cpp
 PDFDictionary.h
 PDFHexString.cpp

@@ -135,7 +135,8 @@ IOBasicTypes::LongBufferSizeType InputFlateDecodeStream::DecodeBufferAndRead(con
 		{
 			if(mSourceStream->Read(&mBuffer,1) != 1)
 			{
-				TRACE_LOG("InputFlateDecodeStream::DecodeBufferAndRead, failed to read from source stream");
+                TRACE_LOG("InputFlateDecodeStream::DecodeBufferAndRead, failed to read from source stream");
+
 				if (mSourceStream->NotEnded()) {
 					TRACE_LOG("InputFlateDecodeStream::DecodeBufferAndRead, failed to read from source stream");
 					inflateResult = Z_STREAM_ERROR;
@@ -182,3 +183,4 @@ bool InputFlateDecodeStream::NotEnded()
 	else
 		return mZLibState->avail_in != 0 && mEndOfCompressionEoncountered;
 }
+

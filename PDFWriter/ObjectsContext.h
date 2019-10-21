@@ -95,6 +95,7 @@ public:
 	// Dictionary writing. StartDictionary starts a context which allows writing.
 	// this context enforces some simple values
 	DictionaryContext* StartDictionary();
+
     DictionaryContext* StartDictionary(bool onlyRead);
 	// ends dictionary context, releases the dictionary started in "StartDictionary", and now returned
 	PDFHummus::EStatusCode EndDictionary(DictionaryContext* inDictionaryContext); 

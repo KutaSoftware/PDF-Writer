@@ -454,7 +454,6 @@ EStatusCode JPEGImageParser::ReadExifData(JPEGImageInformation& outImageInformat
 		else
 			outImageInformation.ExifUnit = 2;
 
-
 		unsigned long currentOffset = 0;																					
 		if(ifdOffset > 8) 																							
 		{																													

@@ -5,6 +5,10 @@ set (CMAKE_CXX_STANDARD 11)
 
 set(USE_BUNDLED TRUE CACHE BOOL "Whether to use bundled libraries")
 
+if(CMAKE_GENERATOR STREQUAL "Xcode")
+    set(IS_XCODE TRUE)
+endif(CMAKE_GENERATOR STREQUAL "Xcode")
+
 if(NOT USE_BUNDLED)
     FIND_PACKAGE(PkgConfig)
 
@@ -25,8 +29,6 @@ if(NOT USE_BUNDLED)
     PKG_CHECK_MODULES(FREETYPE REQUIRED freetype2)
 
     if (MINGW OR FLATPAK)
-        # FIXME: Fedora's MinGW environment doesn't provide LibAesgm
-        # FIXME: Flatpak's Gnome runtime doesn't provide LibAesgm
         ADD_SUBDIRECTORY (LibAesgm)
     else (MINGW OR FLATPAK)
         FIND_PATH(LIBAESGM_INCLUDE_DIRS aescpp.h /usr/local/include/aes /usr/include/aes)

@@ -202,14 +202,16 @@ private:
 
 	PDFHummus::EStatusCode ParseHeaderLine();
 	PDFHummus::EStatusCode ParseEOFLine();
-	PDFHummus::EStatusCode ParseLastXrefPosition();
-	PDFHummus::EStatusCode ParseTrailerDictionary();
+    PDFHummus::EStatusCode ParseLastXrefPosition();
+	PDFHummus::EStatusCode ParseTrailerDictionary(PDFDictionary** outTrailer);
+
 	PDFHummus::EStatusCode BuildXrefTableFromTable();
 	PDFHummus::EStatusCode DetermineXrefSize();
 	PDFHummus::EStatusCode InitializeXref();
 	PDFHummus::EStatusCode ParseXrefFromXrefTable(XrefEntryInput* inXrefTable,
                                                   ObjectIDType inXrefSize,
                                                   LongFilePositionType inXrefPosition,
+												  bool inIsFirstXref,
                                                   XrefEntryInput** outExtendedTable,
                                                   ObjectIDType* outExtendedTableSize);
     XrefEntryInput* ExtendXrefTableToSize(XrefEntryInput* inXrefTable,ObjectIDType inOldSize,ObjectIDType inNewSize);
@@ -243,7 +245,8 @@ private:
 									 unsigned long inEntryWidthsSize);
 	PDFHummus::EStatusCode ReadXrefSegmentValue(IByteReader* inSource,int inEntrySize,long long& outValue);
 	PDFHummus::EStatusCode ReadXrefSegmentValue(IByteReader* inSource,int inEntrySize,ObjectIDType& outValue);
-	PDFHummus::EStatusCode ParseDirectory(LongFilePositionType inXrefPosition,
+
+	PDFHummus::EStatusCode ParsePreviousFileDirectory(LongFilePositionType inXrefPosition,
                                           XrefEntryInput* inXrefTable,
                                           ObjectIDType inXrefSize,
                                           PDFDictionary** outTrailer,

@@ -27,7 +27,13 @@ brg_types.h
 
 set(LibAesgm_OBJECTS $<TARGET_OBJECTS:LibAesgm_OBJLIB>)
 set(LibAesgm_OBJECTS $<TARGET_OBJECTS:LibAesgm_OBJLIB> PARENT_SCOPE)
-add_library(LibAesgm ${LibAesgm_OBJECTS})
+
+if(IS_XCODE)
+    add_library(LibAesgm ${LibAesgm_OBJECTS} aestab.c)
+else(IS_XCODE)
+    add_library(LibAesgm ${LibAesgm_OBJECTS})
+endif(IS_XCODE)
+
 
 set_target_properties(LibAesgm_OBJLIB PROPERTIES COMPILE_FLAGS -fPIC)
 set_target_properties(LibAesgm PROPERTIES COMPILE_FLAGS -fPIC)
