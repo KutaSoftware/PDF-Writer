@@ -60,4 +60,6 @@ Downloads
 # notes etc.
 etc
 build/*
+build-release/*
+output/*
 
