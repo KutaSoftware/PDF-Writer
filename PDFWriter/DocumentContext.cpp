@@ -516,6 +516,8 @@ EStatusCode DocumentContext::WriteCatalogObject(const ObjectReference& inPageTre
 		if(status != PDFHummus::eSuccess)
 			TRACE_LOG("DocumentContext::WriteCatalogObject, unexpected failure. extender declared failure when writing catalog.");
 	}
+
+
 	
 	if (inModifiedFileCopyContext){
 		status = inModifiedFileCopyContext->OnCatalogWrite(&mCatalogInformation,catalogContext,mObjectsContext,this);
@@ -2201,20 +2203,26 @@ public:
             CatalogInformation* inCatalogInformation,
             DictionaryContext* inCatalogDictionaryContext,
             ObjectsContext* inPDFWriterObjectContext,
-            PDFHummus::DocumentContext* inDocumentContext)
-    {
+            PDFHummus::DocumentContext* inDocumentContext) {
 
 		// update version
 		if (mRequiresVersionUpdate) {
 			inCatalogDictionaryContext->WriteKey("Version");
 
 			// need to write as /1.4 (name, of float value)
-			inCatalogDictionaryContext->WriteNameValue(Double(((double)mPDFVersion) / 10).ToString());
+			inCatalogDictionaryContext->WriteNameValue(Double(((double) mPDFVersion) / 10).ToString());
 		}
 
 		// now write all info that's not overriden by this implementation
-		PDFParser* modifiedDocumentParser = mModifiedDocumentCopyingContext->GetSourceDocumentParser();
-		PDFObjectCastPtr<PDFDictionary> catalogDict(modifiedDocumentParser->QueryDictionaryObject(modifiedDocumentParser->GetTrailer(),"Root"));
+		PDFParser *modifiedDocumentParser = mModifiedDocumentCopyingContext->GetSourceDocumentParser();
+
+		PDFObjectCastPtr<PDFDictionary> trailer(modifiedDocumentParser->GetTrailer());
+		if (!trailer)
+		{
+			return eFailure;
+		}
+
+		PDFObjectCastPtr<PDFDictionary> catalogDict(modifiedDocumentParser->QueryDictionaryObject(trailer.GetPtr(),"Root"));
 		MapIterator<PDFNameToPDFObjectMap>  catalogDictIt = catalogDict->GetIterator();
 
 		if (!catalogDict) {
