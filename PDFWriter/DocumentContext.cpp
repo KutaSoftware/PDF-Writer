@@ -2216,7 +2216,8 @@ public:
 		// now write all info that's not overriden by this implementation
 		PDFParser *modifiedDocumentParser = mModifiedDocumentCopyingContext->GetSourceDocumentParser();
 
-		PDFObjectCastPtr<PDFDictionary> trailer(modifiedDocumentParser->GetTrailer());
+		RefCountPtr<PDFDictionary> trailer;
+		trailer = modifiedDocumentParser->GetTrailer();
 		if (!trailer)
 		{
 			return eFailure;
@@ -2352,7 +2353,8 @@ ObjectReference DocumentContext::GetOriginalDocumentPageTreeRoot(PDFParser* inMo
 	do
 	{
         // Get trailer, verify it is correct
-        PDFObjectCastPtr<PDFDictionary> trailer(inModifiedFileParser->GetTrailer());
+        RefCountPtr<PDFDictionary> trailer;
+        trailer = inModifiedFileParser->GetTrailer();
         if(!trailer)
         {
             TRACE_LOG("DocumentContext::GetOriginalDocumentPageTreeRoot, failed to read trailer");
@@ -2543,9 +2545,10 @@ bool DocumentContext::DoExtendersRequireCatalogUpdate(PDFParser* inModifiedFileP
 
 void DocumentContext::CopyEncryptionDictionary(PDFParser* inModifiedFileParser) 
 {
-	// Reuse original encryption dict for new modified trailer. for sake of simplicity (with trailer using ref for encrypt), make it indirect if not already
-    // Get trailer, verify it is correct
-    PDFObjectCastPtr<PDFDictionary> trailer(inModifiedFileParser->GetTrailer());
+//	 Reuse original encryption dict for new modified trailer. for sake of simplicity (with trailer using ref for encrypt), make it indirect if not already
+//     Get trailer, verify it is correct
+    RefCountPtr<PDFDictionary> trailer;
+    trailer = inModifiedFileParser->GetTrailer();
     if(!trailer)
     {
         return;
