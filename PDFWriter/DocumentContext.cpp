@@ -2343,8 +2343,15 @@ ObjectReference DocumentContext::GetOriginalDocumentPageTreeRoot(PDFParser* inMo
 	
 	do
 	{
-		// get catalogue, verify indirect reference
-		PDFObjectCastPtr<PDFIndirectObjectReference> catalogReference(inModifiedFileParser->GetTrailer()->QueryDirectObject("Root"));
+        // Get trailer, verify it is correct
+        PDFObjectCastPtr<PDFDictionary> trailer(inModifiedFileParser->GetTrailer());
+        if(!trailer)
+        {
+            TRACE_LOG("DocumentContext::GetOriginalDocumentPageTreeRoot, failed to read trailer");
+            break;
+        }
+        // get catalogue, verify indirect reference
+        PDFObjectCastPtr<PDFIndirectObjectReference> catalogReference(trailer->QueryDirectObject("Root"));
 		if(!catalogReference)
 		{
 			TRACE_LOG("DocumentContext::GetOriginalDocumentPageTreeRoot, failed to read catalog reference in trailer");
@@ -2529,7 +2536,13 @@ bool DocumentContext::DoExtendersRequireCatalogUpdate(PDFParser* inModifiedFileP
 void DocumentContext::CopyEncryptionDictionary(PDFParser* inModifiedFileParser) 
 {
 	// Reuse original encryption dict for new modified trailer. for sake of simplicity (with trailer using ref for encrypt), make it indirect if not already
-	RefCountPtr<PDFObject> encrypt(inModifiedFileParser->GetTrailer()->QueryDirectObject("Encrypt"));
+    // Get trailer, verify it is correct
+    PDFObjectCastPtr<PDFDictionary> trailer(inModifiedFileParser->GetTrailer());
+    if(!trailer)
+    {
+        return;
+    }
+    RefCountPtr<PDFObject> encrypt(trailer->QueryDirectObject("Encrypt"));
 	if (encrypt.GetPtr() == NULL)
 		return;
 
