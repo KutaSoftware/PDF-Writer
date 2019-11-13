@@ -14,6 +14,7 @@ BUILD
 BuildLog.htm
 *.obj
 *.idb
+*.idea
 
 _.swp
 
