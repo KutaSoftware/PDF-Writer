@@ -516,6 +516,8 @@ EStatusCode DocumentContext::WriteCatalogObject(const ObjectReference& inPageTre
 		if(status != PDFHummus::eSuccess)
 			TRACE_LOG("DocumentContext::WriteCatalogObject, unexpected failure. extender declared failure when writing catalog.");
 	}
+
+
 	
 	if (inModifiedFileCopyContext){
 		status = inModifiedFileCopyContext->OnCatalogWrite(&mCatalogInformation,catalogContext,mObjectsContext,this);
@@ -2201,20 +2203,27 @@ public:
             CatalogInformation* inCatalogInformation,
             DictionaryContext* inCatalogDictionaryContext,
             ObjectsContext* inPDFWriterObjectContext,
-            PDFHummus::DocumentContext* inDocumentContext)
-    {
+            PDFHummus::DocumentContext* inDocumentContext) {
 
 		// update version
 		if (mRequiresVersionUpdate) {
 			inCatalogDictionaryContext->WriteKey("Version");
 
 			// need to write as /1.4 (name, of float value)
-			inCatalogDictionaryContext->WriteNameValue(Double(((double)mPDFVersion) / 10).ToString());
+			inCatalogDictionaryContext->WriteNameValue(Double(((double) mPDFVersion) / 10).ToString());
 		}
 
 		// now write all info that's not overriden by this implementation
-		PDFParser* modifiedDocumentParser = mModifiedDocumentCopyingContext->GetSourceDocumentParser();
-		PDFObjectCastPtr<PDFDictionary> catalogDict(modifiedDocumentParser->QueryDictionaryObject(modifiedDocumentParser->GetTrailer(),"Root"));
+		PDFParser *modifiedDocumentParser = mModifiedDocumentCopyingContext->GetSourceDocumentParser();
+
+		RefCountPtr<PDFDictionary> trailer;
+		trailer = modifiedDocumentParser->GetTrailer();
+		if (!trailer)
+		{
+			return eFailure;
+		}
+
+		PDFObjectCastPtr<PDFDictionary> catalogDict(modifiedDocumentParser->QueryDictionaryObject(trailer.GetPtr(),"Root"));
 		MapIterator<PDFNameToPDFObjectMap>  catalogDictIt = catalogDict->GetIterator();
 
 		if (!catalogDict) {
@@ -2343,8 +2352,16 @@ ObjectReference DocumentContext::GetOriginalDocumentPageTreeRoot(PDFParser* inMo
 	
 	do
 	{
-		// get catalogue, verify indirect reference
-		PDFObjectCastPtr<PDFIndirectObjectReference> catalogReference(inModifiedFileParser->GetTrailer()->QueryDirectObject("Root"));
+        // Get trailer, verify it is correct
+        RefCountPtr<PDFDictionary> trailer;
+        trailer = inModifiedFileParser->GetTrailer();
+        if(!trailer)
+        {
+            TRACE_LOG("DocumentContext::GetOriginalDocumentPageTreeRoot, failed to read trailer");
+            break;
+        }
+        // get catalogue, verify indirect reference
+        PDFObjectCastPtr<PDFIndirectObjectReference> catalogReference(trailer->QueryDirectObject("Root"));
 		if(!catalogReference)
 		{
 			TRACE_LOG("DocumentContext::GetOriginalDocumentPageTreeRoot, failed to read catalog reference in trailer");
@@ -2528,8 +2545,15 @@ bool DocumentContext::DoExtendersRequireCatalogUpdate(PDFParser* inModifiedFileP
 
 void DocumentContext::CopyEncryptionDictionary(PDFParser* inModifiedFileParser) 
 {
-	// Reuse original encryption dict for new modified trailer. for sake of simplicity (with trailer using ref for encrypt), make it indirect if not already
-	RefCountPtr<PDFObject> encrypt(inModifiedFileParser->GetTrailer()->QueryDirectObject("Encrypt"));
+//	 Reuse original encryption dict for new modified trailer. for sake of simplicity (with trailer using ref for encrypt), make it indirect if not already
+//     Get trailer, verify it is correct
+    RefCountPtr<PDFDictionary> trailer;
+    trailer = inModifiedFileParser->GetTrailer();
+    if(!trailer)
+    {
+        return;
+    }
+    RefCountPtr<PDFObject> encrypt(trailer->QueryDirectObject("Encrypt"));
 	if (encrypt.GetPtr() == NULL)
 		return;
 
