@@ -190,12 +190,12 @@ private:
 	bool mEncounteredFileStart;
 	ObjectIDTypeToObjectStreamHeaderEntryMap mObjectStreamsCache;
 
-	double mPDFLevel;
+    double mPDFLevel = 0;
 	LongFilePositionType mLastXrefPosition;
 	RefCountPtr<PDFDictionary> mTrailer;
 	ObjectIDType mXrefSize;
 	XrefEntryInput* mXrefTable;
-	unsigned long mPagesCount;
+    unsigned long mPagesCount = 0;
 	ObjectIDType* mPagesObjectIDs;
 	IPDFParserExtender* mParserExtender;
     bool mAllowExtendingSegments;

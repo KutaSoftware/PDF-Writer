@@ -2269,7 +2269,7 @@ EStatusCode	DocumentContext::FinalizeModifiedPDF(PDFParser* inModifiedFileParser
         // the new pages and the old pages
         
         ObjectReference originalDocumentPageTreeRoot = GetOriginalDocumentPageTreeRoot(inModifiedFileParser);
-        bool hasNewPageTreeRoot;
+        bool hasNewPageTreeRoot = false;
         ObjectReference finalPageRoot;
         
         if(DocumentHasNewPages())
@@ -2303,9 +2303,13 @@ EStatusCode	DocumentContext::FinalizeModifiedPDF(PDFParser* inModifiedFileParser
         }
         // marking if has new page root, cause this effects the decision to have a new catalog
         
-        bool requiresVersionUpdate = IsRequiredVersionHigherThanPDFVersion(inModifiedFileParser,inModifiedPDFVersion);
+        bool requiresVersionUpdate = false;
+        requiresVersionUpdate = IsRequiredVersionHigherThanPDFVersion(inModifiedFileParser,inModifiedPDFVersion);
+
+        bool extendersRequireCatalogUpdate = false;
+        extendersRequireCatalogUpdate = DoExtendersRequireCatalogUpdate(inModifiedFileParser);
         
-        if(hasNewPageTreeRoot || requiresVersionUpdate || DoExtendersRequireCatalogUpdate(inModifiedFileParser))
+        if(hasNewPageTreeRoot || requiresVersionUpdate || extendersRequireCatalogUpdate)
         {
 			// use an extender to copy original catalog elements and update version if required
 			PDFDocumentCopyingContext* copyingContext = CreatePDFCopyingContext(inModifiedFileParser);
@@ -2529,7 +2533,9 @@ ObjectIDType DocumentContext::WriteCombinedPageTree(PDFParser* inModifiedFilePar
            
 bool DocumentContext::IsRequiredVersionHigherThanPDFVersion(PDFParser* inModifiedFileParser,EPDFVersion inModifiedPDFVersion)
 {
-    return (EPDFVersion)((size_t)(inModifiedFileParser->GetPDFLevel() * 10)) < inModifiedPDFVersion;
+    if(inModifiedFileParser)
+        return (EPDFVersion)((size_t)(inModifiedFileParser->GetPDFLevel() * 10)) < inModifiedPDFVersion;
+    return false;
 }
 
 bool DocumentContext::DoExtendersRequireCatalogUpdate(PDFParser* inModifiedFileParser)
@@ -2537,9 +2543,10 @@ bool DocumentContext::DoExtendersRequireCatalogUpdate(PDFParser* inModifiedFileP
     bool isUpdateRequired = false;
     
  	IDocumentContextExtenderSet::iterator it = mExtenders.begin();
-	for(; it != mExtenders.end() && !isUpdateRequired; ++it)
-		isUpdateRequired = (*it)->IsCatalogUpdateRequiredForModifiedFile(inModifiedFileParser);
-    
+        for(; it != mExtenders.end() && !isUpdateRequired; ++it){
+                bool tempValue = (*it)->IsCatalogUpdateRequiredForModifiedFile(inModifiedFileParser);
+                if(tempValue) isUpdateRequired = tempValue;
+        }
     return isUpdateRequired;
 }
 
