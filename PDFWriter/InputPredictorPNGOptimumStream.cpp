@@ -114,7 +114,9 @@ void InputPredictorPNGOptimumStream::DecodeNextByte(Byte& outDecodedByte)
 			outDecodedByte = *mIndex;
 			break;
 		case 1:
-			outDecodedByte = (Byte)((char)*(mIndex-mBytesPerPixel) + (char)*mIndex);
+                        outDecodedByte = (mIndex-mBytesPerPixel >= mBuffer)?
+                                    (Byte)((char)*(mIndex-mBytesPerPixel) + (char)*mIndex):
+                                    (Byte)((char)*mIndex);
 			break;
 		case 2:
 			outDecodedByte = (Byte)((char)mUpValues[mIndex-mBuffer] + (char)*mIndex);
