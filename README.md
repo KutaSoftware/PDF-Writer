@@ -44,3 +44,8 @@ cd build
 cmake ..
 make -j4
 ~~~
+
+## Build as dependency
+
+It is possible to dissable the building of the tests of this project. This is useful if a target with the same name (unit_test) exists in the parent project, to avoid error due to duplicated targets.
+To do this the "AVOID_PDFWRITER_TESTS" variable should be set before include this project.
