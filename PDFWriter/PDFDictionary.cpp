@@ -59,6 +59,22 @@ void PDFDictionary::Insert(PDFName* inKeyObject, PDFObject* inValueObject)
 	mValues.insert(PDFNameToPDFObjectMap::value_type(inKeyObject,inValueObject));
 }
 
+void PDFDictionary::InsertOrReplace(PDFName* inKeyObject, PDFObject* inValueObject)
+{
+    PDFNameToPDFObjectMap::iterator it = mValues.find(inKeyObject);
+    if(it != mValues.end()){
+        it->second->Release();
+        inValueObject->AddRef();
+        it->second = inValueObject;
+    }
+    else{
+        Insert(inKeyObject, inValueObject);
+    }
+
+
+
+}
+
 
 bool PDFDictionary::Exists(std::string inName)
 {
