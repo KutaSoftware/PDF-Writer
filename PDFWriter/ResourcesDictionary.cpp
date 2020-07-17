@@ -37,7 +37,7 @@ ResourcesDictionary::ResourcesDictionary(void)
     mShadingCount = 0;
 
 }
-
+static const std::string baseRenameString = "_SHW_";
 ResourcesDictionary::~ResourcesDictionary(void)
 {
 }
@@ -53,7 +53,7 @@ SingleValueContainerIterator<StringSet> ResourcesDictionary::GetProcesetsIterato
 	return SingleValueContainerIterator<StringSet>(mProcsets);
 }
 
-static const std::string scFM = "Fm";
+static const std::string scFM = "Fm" + baseRenameString;
 std::string ResourcesDictionary::AddFormXObjectMapping(ObjectIDType inFormXObjectID)
 {
     if(inFormXObjectID == 0)
@@ -86,7 +86,7 @@ void ResourcesDictionary::AddFormXObjectMapping(ObjectIDType inFormXObjectID,con
 		it->second = inFormXObjectName;
 }
 
-static const std::string scIM = "Im";
+static const std::string scIM = "Im" + baseRenameString;
 std::string ResourcesDictionary::AddImageXObjectMapping(PDFImageXObject* inImageXObject)
 {
 	ObjectIDTypeToStringMap::iterator it = mXObjects.find(inImageXObject->GetImageObjectID());
@@ -127,7 +127,7 @@ void ResourcesDictionary::AddImageXObjectMapping(PDFImageXObject* inImageXObject
 		it->second = inImageXObjectName;
 }
 
-static const std::string scGS = "GS";
+static const std::string scGS = "GS" + baseRenameString;
 std::string ResourcesDictionary::AddExtGStateMapping(ObjectIDType inExtGStateID)
 {
     if(inExtGStateID == 0)
@@ -198,7 +198,7 @@ void ResourcesDictionary::AddImageXObjectMapping(ObjectIDType inImageXObjectID, 
 		it->second = inImageXObjectName;
 }
 
-static const std::string scFN = "FN";
+static const std::string scFN = "FN" + baseRenameString;
 std::string ResourcesDictionary::AddFontMapping(ObjectIDType inFontObjectID)
 {
     if(inFontObjectID == 0)
@@ -238,7 +238,7 @@ MapIterator<ObjectIDTypeToStringMap> ResourcesDictionary::GetFontsIterator()
 }
 
 // Color space
-static const std::string scCS = "CS";
+static const std::string scCS = "CS" + baseRenameString;
 std::string ResourcesDictionary::AddColorSpaceMapping(ObjectIDType inColorspaceID)
 {
     if(inColorspaceID == 0)
@@ -268,7 +268,7 @@ MapIterator<ObjectIDTypeToStringMap> ResourcesDictionary::GetColorSpacesIterator
 }
 
 // Patterns
-static const std::string scPT = "PT";
+static const std::string scPT = "PT" + baseRenameString;
 std::string ResourcesDictionary::AddPatternMapping(ObjectIDType inPatternID)
 {
     if(inPatternID == 0)
@@ -299,7 +299,7 @@ MapIterator<ObjectIDTypeToStringMap> ResourcesDictionary::GetPatternsIterator()
 
 
 // Properties
-static const std::string scPP = "PP";
+static const std::string scPP = "PP" + baseRenameString;
 std::string ResourcesDictionary::AddPropertyMapping(ObjectIDType inPropertyID)
 {
     if(inPropertyID == 0)
@@ -329,7 +329,7 @@ MapIterator<ObjectIDTypeToStringMap> ResourcesDictionary::GetPropertiesIterator(
 }
 
 // Generic XObjects
-static const std::string scXO = "XO";
+static const std::string scXO = "XO" + baseRenameString;
 std::string ResourcesDictionary::AddXObjectMapping(ObjectIDType inXObjectID)
 {
     if(inXObjectID == 0)
@@ -359,7 +359,7 @@ MapIterator<ObjectIDTypeToStringMap> ResourcesDictionary::GetXObjectsIterator()
 }
 
 // Shading
-static const std::string scSH = "SH";
+static const std::string scSH = "SH" + baseRenameString;
 std::string ResourcesDictionary::AddShadingMapping(ObjectIDType inShadingID)
 {
     if(inShadingID == 0)
