@@ -96,6 +96,7 @@ public:
 	MapIterator<ObjectIDTypeToStringMap> GetShadingsIterator();
 
 private:
+	std::string mRandID;
 
 	StringSet mProcsets;
     unsigned long mFormXObjectsCount;
@@ -116,6 +117,8 @@ private:
     unsigned long mShadingCount;
 
 	void AddImageXObjectMappingWithName(PDFImageXObject* inImageXObject, const std::string& inImageXObjectName);
+	bool isLabelAlreadyUsed(std::string &label, ObjectIDTypeToStringMap &map);
+	std::string generateRandomString(size_t length);
 
 };
 
