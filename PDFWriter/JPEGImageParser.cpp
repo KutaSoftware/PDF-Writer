@@ -158,7 +158,6 @@ EStatusCode JPEGImageParser::ReadJPEGID()
 	
 	if (status != PDFHummus::eSuccess)
 		return status;
-	
 	if (memcmp(mReadBuffer, scJPEGID, 2) != 0)
 		return PDFHummus::eFailure;
 	
@@ -454,7 +453,6 @@ EStatusCode JPEGImageParser::ReadExifData(JPEGImageInformation& outImageInformat
 			outImageInformation.ExifUnit = resolutionUnitValue;		
 		else
 			outImageInformation.ExifUnit = 2;
-
 
 		unsigned long currentOffset = 0;																					
 		if(ifdOffset > 8) 																							

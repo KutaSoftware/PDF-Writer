@@ -69,6 +69,11 @@ struct ObjectStreamHeaderEntry
 	LongFilePositionType mObjectOffset;
 };
 
+struct PdfParserExtendedConfiguration
+{
+    bool decodeDCT;
+};
+
 typedef std::map<ObjectIDType,ObjectStreamHeaderEntry*> ObjectIDTypeToObjectStreamHeaderEntryMap;
 
 class PDFParser
@@ -76,6 +81,11 @@ class PDFParser
 public:
 	PDFParser(void);
 	virtual ~PDFParser(void);
+
+    // Disable and enable DCT decoding to avoid double compression when extracting images
+    void DCTDecodeEnable();
+    void DCTDecodeDisable();
+    bool DCTDecodeStatus();
 
 	// sets the stream to parse, then parses for enough information to be able
 	// to parse objects later
@@ -166,6 +176,7 @@ public:
     IByteReaderWithPosition* GetParserStream();
     
 private:
+    PdfParserExtendedConfiguration mConfiguration;
 	PDFObjectParser mObjectParser;
 	DecryptionHelper mDecryptionHelper;
 	IByteReaderWithPosition* mStream;
@@ -179,20 +190,21 @@ private:
 	bool mEncounteredFileStart;
 	ObjectIDTypeToObjectStreamHeaderEntryMap mObjectStreamsCache;
 
-	double mPDFLevel;
+    double mPDFLevel = 0;
 	LongFilePositionType mLastXrefPosition;
 	RefCountPtr<PDFDictionary> mTrailer;
 	ObjectIDType mXrefSize;
 	XrefEntryInput* mXrefTable;
-	unsigned long mPagesCount;
+    unsigned long mPagesCount = 0;
 	ObjectIDType* mPagesObjectIDs;
 	IPDFParserExtender* mParserExtender;
     bool mAllowExtendingSegments;
 
 	PDFHummus::EStatusCode ParseHeaderLine();
 	PDFHummus::EStatusCode ParseEOFLine();
-	PDFHummus::EStatusCode ParseLastXrefPosition();
+    PDFHummus::EStatusCode ParseLastXrefPosition();
 	PDFHummus::EStatusCode ParseTrailerDictionary(PDFDictionary** outTrailer);
+
 	PDFHummus::EStatusCode BuildXrefTableFromTable();
 	PDFHummus::EStatusCode DetermineXrefSize();
 	PDFHummus::EStatusCode InitializeXref();
@@ -233,6 +245,7 @@ private:
 									 unsigned long inEntryWidthsSize);
 	PDFHummus::EStatusCode ReadXrefSegmentValue(IByteReader* inSource,int inEntrySize,long long& outValue);
 	PDFHummus::EStatusCode ReadXrefSegmentValue(IByteReader* inSource,int inEntrySize,ObjectIDType& outValue);
+
 	PDFHummus::EStatusCode ParsePreviousFileDirectory(LongFilePositionType inXrefPosition,
                                           XrefEntryInput* inXrefTable,
                                           ObjectIDType inXrefSize,

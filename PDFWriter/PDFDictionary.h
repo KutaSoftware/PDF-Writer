@@ -25,10 +25,9 @@
 
 #include <map>
 
-
-
 struct PDFNameLess
 {
+
 	bool operator( ) (const PDFName* left, 
 						const PDFName* right ) const
 	{
@@ -52,6 +51,7 @@ public:
 
 	// AddRefs on both
 	void Insert(PDFName* inKeyObject, PDFObject* inValueObject);
+	void InsertOrReplace(PDFName* inKeyObject, PDFObject* inValueObject);
 
     bool Exists(std::string inName);
 	PDFObject* QueryDirectObject(std::string inName);

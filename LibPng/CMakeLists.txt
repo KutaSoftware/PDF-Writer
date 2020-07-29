@@ -1,11 +1,13 @@
 cmake_minimum_required (VERSION 2.6) 
 project(LibPng)
 
+
 # https://github.com/julienr/libpng-android/issues/6
 if (${CMAKE_HOST_SYSTEM_PROCESSOR} STREQUAL "aarch64")
     set(CMAKE_C_FLAGS -DPNG_ARM_NEON_OPT=0 ${CMAKE_C_FLAGS})
     message (STATUS "libPng Arm64 - disable fpu Neon optimization")
 endif()
+
 
 set(LIBPNG_INCLUDE_DIRS ${LibPng_SOURCE_DIR} PARENT_SCOPE)
 set(LIBPNG_LDFLAGS LibPng PARENT_SCOPE)
@@ -50,6 +52,9 @@ else(IS_XCODE)
     add_library(LibPng ${LibPng_OBJECTS})
 endif(IS_XCODE)
 
+
+set_target_properties(LibPng_OBJLIB PROPERTIES COMPILE_FLAGS -fPIC)
+set_target_properties(LibPng PROPERTIES COMPILE_FLAGS -fPIC)
 
 target_link_libraries(LibPng ${ZLIB_LDFLAGS})
 

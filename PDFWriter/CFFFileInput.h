@@ -149,9 +149,6 @@ struct TopDictInfo
 
 typedef std::vector<EncodingsInfo*> EncodingsInfoVector;
 
-
-
-
 struct StringLess
 {
 	bool operator( ) (const char* left, 

@@ -316,7 +316,7 @@ private:
     // for modified workflow, the next two will hold the input file data
     InputFile mModifiedFile;
     PDFParser mModifiedFileParser;
-    EPDFVersion mModifiedFileVersion;
+    EPDFVersion mModifiedFileVersion = ePDFVersionUndefined;
     bool mIsModified;
 
 	void SetupLog(const LogConfiguration& inLogConfiguration);

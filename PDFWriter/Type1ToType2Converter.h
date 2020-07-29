@@ -53,6 +53,7 @@ struct Stem
 
 struct StemLess
 {
+
 	bool operator( ) (const Stem& inLeft, 
 						const Stem& inRight ) const
 	{

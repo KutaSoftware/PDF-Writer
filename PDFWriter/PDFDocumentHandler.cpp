@@ -2034,6 +2034,7 @@ EStatusCode PDFDocumentHandler::WriteStreamObject(PDFStreamInput* inStream, IObj
 	}
 
 	PDFStream* newStream = mObjectsContext->StartUnfilteredPDFStream(newStreamDictionary);
+
 	OutputStreamTraits outputTraits(newStream->GetWriteStream());
 	IByteReader* streamReader = mParser->StartReadingFromStreamForPlainCopying(inStream);
 
@@ -2458,5 +2459,6 @@ PDFObject* PDFDocumentHandler::FindPageResources(PDFParser* inParser, PDFDiction
 			return FindPageResources(inParser,parentDict.GetPtr());
 		}
 		
-	}	
+    }
 }
+

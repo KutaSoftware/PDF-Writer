@@ -95,6 +95,8 @@ public:
 	// Dictionary writing. StartDictionary starts a context which allows writing.
 	// this context enforces some simple values
 	DictionaryContext* StartDictionary();
+
+    DictionaryContext* StartDictionary(bool onlyRead);
 	// ends dictionary context, releases the dictionary started in "StartDictionary", and now returned
 	PDFHummus::EStatusCode EndDictionary(DictionaryContext* inDictionaryContext); 
 
@@ -107,6 +109,7 @@ public:
 	ObjectIDType StartNewIndirectObject();
 	// override for objects that already have been allocated in advance, and have an object ID
 	void StartNewIndirectObject(ObjectIDType inObjectID);
+	void StartNewIndirectObject(ObjectIDType inObjectID, bool onlyRead);
 	void EndIndirectObject();
 
     // for modified files scenarios, modify an existing object

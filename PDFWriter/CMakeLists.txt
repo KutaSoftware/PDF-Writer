@@ -34,7 +34,9 @@ endif(NOT PDFHUMMUS_NO_PNG)
 
 
 
-add_library (PDFWriter_OBJLIB OBJECT
+
+add_library (PDFWriter_OBJLIB
+
 #sources
 AbstractContentContext.cpp
 AbstractWrittenFont.cpp
@@ -373,7 +375,6 @@ XCryptionCommon.h
 XObjectContentContext.h
 )
 
-
 set(PDFWriter_OBJECTS $<TARGET_OBJECTS:PDFWriter_OBJLIB>)
 set(PDFWriter_OBJECTS $<TARGET_OBJECTS:PDFWriter_OBJLIB> PARENT_SCOPE)
 if(IS_XCODE)
@@ -383,7 +384,10 @@ else(IS_XCODE)
 endif(IS_XCODE)
 
 target_link_libraries(PDFWriter ${LIBAESGM_LDFLAGS} ${LIBJPEG_LDFLAGS} ${ZLIB_LDFLAGS} ${LIBTIFF_LDFLAGS} ${FREETYPE_LDFLAGS} ${LIBPNG_LDFLAGS})
+
 set_target_properties(PDFWriter PROPERTIES VERSION ${PDFWRITER_LIB_VERSION} SOVERSION ${PDFWRITER_SO_VERSION})
+
+set_target_properties(PDFWriter PROPERTIES COMPILE_FLAGS -fPIC)
 
 install(TARGETS PDFWriter
     RUNTIME DESTINATION bin COMPONENT libraries

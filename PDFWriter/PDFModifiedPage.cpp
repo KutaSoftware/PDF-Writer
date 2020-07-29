@@ -363,6 +363,7 @@ PDFHummus::EStatusCode PDFModifiedPage::WritePage()
 
 		delete newStream;
 		delete copyingContext;
+
 	} while (false);
 
 	return status;

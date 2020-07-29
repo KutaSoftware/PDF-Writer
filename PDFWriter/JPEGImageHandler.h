@@ -82,7 +82,7 @@ public:
     DoubleAndDoublePair GetImageDimensions(const JPEGImageInformation& inJPGImageInformation);
 	int GetColorComponents(const JPEGImageInformation& inJPGImageInformation);
 
-private:
+public:
 	JPEGImageInformation mNullInformation;
 	StringToJPEGImageInformationMap mImagesInformationMap;
 	ObjectsContext* mObjectsContext;

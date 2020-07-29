@@ -45,6 +45,8 @@
 #include "InputDCTDecodeStream.h"
 #include "ArrayOfInputStreamsStream.h"
 
+#include "InputBufferedStream.h"
+
 #include  <algorithm>
 using namespace PDFHummus;
 
@@ -59,11 +61,25 @@ PDFParser::PDFParser(void)
                                     // declared size. but i would like to allow files that do extend. as this is incompatible with the specs, i'll make
                                     // this boolean dendent. i will sometimes make it public so ppl can actually modify this policy. for now, it's internal
 	mObjectParser.SetDecryptionHelper(&mDecryptionHelper);
+
+    mConfiguration.decodeDCT = true; //
 }
 
 PDFParser::~PDFParser(void)
 {
 	ResetParser();
+}
+
+void PDFParser::DCTDecodeEnable(){
+    mConfiguration.decodeDCT = true;
+}
+
+void PDFParser::DCTDecodeDisable(){
+    mConfiguration.decodeDCT = false;
+}
+
+bool PDFParser::DCTDecodeStatus(){
+    return mConfiguration.decodeDCT;
 }
 
 void PDFParser::ResetParser()
@@ -411,7 +427,9 @@ EStatusCode PDFParser::ParseLastXrefPosition()
 }
 
 static const std::string scTrailer = "trailer";
+
 EStatusCode PDFParser::ParseTrailerDictionary(PDFDictionary** outTrailer)
+
 {
 
 	EStatusCode status = PDFHummus::eSuccess;
@@ -442,6 +460,8 @@ EStatusCode PDFParser::ParseTrailerDictionary(PDFDictionary** outTrailer)
 		mObjectParser.ResetReadState(aTokenizer);
 		PDFObjectCastPtr<PDFDictionary> trailerDictionary(mObjectParser.ParseNewObject());
 		if(!trailerDictionary)
+
+
 		{
 			status = PDFHummus::eFailure;
 			TRACE_LOG("PDFParser::ParseTrailerDictionary, failure to parse trailer dictionary");
@@ -450,6 +470,8 @@ EStatusCode PDFParser::ParseTrailerDictionary(PDFDictionary** outTrailer)
 
 		trailerDictionary->AddRef();
 		*outTrailer = trailerDictionary.GetPtr();
+
+
 	}while(false);
 
 	return status;
@@ -480,6 +502,8 @@ EStatusCode PDFParser::BuildXrefTableFromTable()
         XrefEntryInput* extendedTable = NULL;
         ObjectIDType extendedTableSize;
 		status = ParseXrefFromXrefTable(mXrefTable,mXrefSize,mLastXrefPosition,!hasPrev, &extendedTable,&extendedTableSize);
+
+
 		if(status != PDFHummus::eSuccess)
 			break;
 
@@ -590,7 +614,6 @@ EStatusCode PDFParser::ParseXrefFromXrefTable(XrefEntryInput* inXrefTable,
 			// token may be either start of section or "trailer"
 			if(scTrailer == token.second)
 				break;
-
 			// parse segment start
 			ObjectIDType segmentStart = ObjectIDTypeBox(token.second);
 			
@@ -598,7 +621,7 @@ EStatusCode PDFParser::ParseXrefFromXrefTable(XrefEntryInput* inXrefTable,
 			// this should take care of this, adding extra measure of safety when reading the first xref
 			if (currentObject != 0 || !inIsFirstXref)
 				currentObject = segmentStart;
-			
+
 			token = tokenizer.GetNextToken();
 			if(!token.first)
 			{
@@ -607,6 +630,8 @@ EStatusCode PDFParser::ParseXrefFromXrefTable(XrefEntryInput* inXrefTable,
 				break;
 			}
 			// parse segment size
+
+
 			if(ObjectIDTypeBox(token.second) == 0)
 				continue; // probably will never happen
 			firstNonSectionObject = currentObject + ObjectIDTypeBox(token.second);
@@ -1049,6 +1074,8 @@ EStatusCode PDFParser::ParsePreviousXrefs(PDFDictionary* inTrailer)
         XrefEntryInput* extendedTable = NULL;
         ObjectIDType extendedTableSize;
 		status = ParsePreviousFileDirectory(previousPosition->GetValue(),aTable,mXrefSize,&trailerP,&extendedTable,&extendedTableSize);
+
+
 		if(status != PDFHummus::eSuccess)
 			break;
 		RefCountPtr<PDFDictionary> trailer(trailerP);
@@ -1126,7 +1153,6 @@ EStatusCode PDFParser::ParsePreviousFileDirectory(LongFilePositionType inXrefPos
                 inXrefSize = *outExtendedTableSize;
             }
 
-
 			// For hybrids, check also XRefStm entry
 			PDFObjectCastPtr<PDFInteger> xrefStmReference(trailerDictionary->QueryDirectObject("XRefStm"));
 			if(xrefStmReference.GetPtr())
@@ -1141,6 +1167,8 @@ EStatusCode PDFParser::ParsePreviousFileDirectory(LongFilePositionType inXrefPos
 			}
 
 			*outTrailer = trailerDictionary;
+
+
 		}
 		else if(anObject->GetType() == PDFObject::ePDFObjectInteger && ((PDFInteger*)anObject.GetPtr())->GetValue() > 0)
 		{
@@ -1240,6 +1268,7 @@ EStatusCode PDFParser::ParseFileDirectory()
 		{
 			// this would be a normal xref case
 			// jump lines till you get to a line where the token is "trailer". then parse.
+
 			PDFDictionary* trailerP = NULL;
 			status = ParseTrailerDictionary(&trailerP);
 			if(status != PDFHummus::eSuccess)
@@ -1873,7 +1902,7 @@ IByteReader* PDFParser::CreateInputStreamReader(PDFStreamInput* inStream)
 				{
 					PDFObjectCastPtr<PDFDictionary> decodeParamsItem(QueryArrayObject(decodeParams.GetPtr(),i));
 
-					createStatus = CreateFilterForStream(result,(PDFName*)filterObject.GetPtr(), !decodeParamsItem ? NULL: decodeParamsItem.GetPtr(), inStream);
+					createStatus = CreateFilterForStream(result,filterObjectItem.GetPtr(), !decodeParamsItem ? NULL: decodeParamsItem.GetPtr(), inStream);
 				}
 
 				if(createStatus.first != eSuccess)
@@ -1916,6 +1945,7 @@ IByteReader* PDFParser::CreateInputStreamReader(PDFStreamInput* inStream)
 	}
 	return result;
 }
+#include <iostream>
 
 EStatusCodeAndIByteReader PDFParser::CreateFilterForStream(IByteReader* inStream,PDFName* inFilterName,PDFDictionary* inDecodeParams, PDFStreamInput* inPDFStream)
 {
@@ -2007,7 +2037,12 @@ EStatusCodeAndIByteReader PDFParser::CreateFilterForStream(IByteReader* inStream
 #ifndef PDFHUMMUS_NO_DCT
         else if(inFilterName->GetValue() == "DCTDecode")
         {
-            result = new InputDCTDecodeStream(inStream);
+            if(DCTDecodeStatus()){
+                result = new InputDCTDecodeStream(inStream);
+            }
+            else {
+                result = inStream;
+            }
         }
 #endif
 		else if (inFilterName->GetValue() == "Crypt")
@@ -2016,6 +2051,12 @@ EStatusCodeAndIByteReader PDFParser::CreateFilterForStream(IByteReader* inStream
 
 			result = mDecryptionHelper.CreateDecryptionFilterForStream(inPDFStream, inStream, cryptFilterName->GetValue());
 		}
+        else if (inFilterName->GetValue() == "CCITTFaxDecode" || inFilterName->GetValue() == "RunLengthDecode" || inFilterName->GetValue() == "LZWDecode")
+        {
+            //TODO: decode stream. This return encoded buffer data. The data can be decoded usign libtiff (we need to create a new IByteReader to CCITT image data)
+            result = new InputBufferedStream((IByteReaderWithPosition*)inStream);
+            TRACE_LOG("PDFParser::CreateFilterForStream, CCITTFaxDecode pending");
+        }
 		else if(mParserExtender)
 		{
 			result = mParserExtender->CreateFilterForStream(inStream,inFilterName,inDecodeParams, inPDFStream);

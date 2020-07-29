@@ -38,6 +38,14 @@ DictionaryContext::DictionaryContext(ObjectsContext* inObjectsContext,size_t inI
 	mObjectsContext->WriteKeyword(scStartDictionary);
 }
 
+DictionaryContext::DictionaryContext(ObjectsContext* inObjectsContext,size_t inIndentLevel, bool onlyRead)
+{
+	mObjectsContext = inObjectsContext;
+	mIndentLevel= inIndentLevel;
+
+	if(!onlyRead) mObjectsContext->WriteKeyword(scStartDictionary);
+}
+
 DictionaryContext::~DictionaryContext(void)
 {
 	if(mIndentLevel > 0)

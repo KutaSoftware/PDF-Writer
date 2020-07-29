@@ -21,6 +21,7 @@
 #include "ResourcesDictionary.h"
 #include "BoxingBase.h"
 #include "PDFImageXObject.h"
+#include <string>
 
 typedef BoxingBaseWithRW<unsigned long> ULong;
 
@@ -36,8 +37,9 @@ ResourcesDictionary::ResourcesDictionary(void)
     mPropertiesCount = 0;
     mShadingCount = 0;
 
-}
+    mRandID = "_" + generateRandomString(3) + "_";
 
+}
 ResourcesDictionary::~ResourcesDictionary(void)
 {
 }
@@ -58,18 +60,26 @@ std::string ResourcesDictionary::AddFormXObjectMapping(ObjectIDType inFormXObjec
 {
     if(inFormXObjectID == 0)
     {
-        std::string newName = scFM + ULong(mFormXObjectsCount+1).ToString();
-        ++mFormXObjectsCount;
+        std::string newName;
+        do{
+            newName = scFM + mRandID + ULong(mFormXObjectsCount+1).ToString();
+            ++mFormXObjectsCount;
+        }while(isLabelAlreadyUsed(newName,mXObjects));
+
         return newName;
     }
     else 
     {
         ObjectIDTypeToStringMap::iterator it = mXObjects.find(inFormXObjectID);
-        
+
         if(it == mXObjects.end())
         {
-            std::string newName = scFM + ULong(mFormXObjectsCount+1).ToString();
-            ++mFormXObjectsCount;
+            std::string newName;
+            do{
+                newName = scFM + mRandID + ULong(mFormXObjectsCount+1).ToString();
+                ++mFormXObjectsCount;
+            }while(isLabelAlreadyUsed(newName,mXObjects));
+
             it = mXObjects.insert(ObjectIDTypeToStringMap::value_type(inFormXObjectID,newName)).first;
         }
         return it->second;
@@ -93,8 +103,12 @@ std::string ResourcesDictionary::AddImageXObjectMapping(PDFImageXObject* inImage
 
 	if(it == mXObjects.end())
 	{
-		std::string newName = scIM + ULong(mImageXObjectsCount+1).ToString();
-        ++mImageXObjectsCount;
+		std::string newName;
+		do{
+		    newName = scIM + mRandID + ULong(mImageXObjectsCount+1).ToString();
+            ++mImageXObjectsCount;
+		}while(isLabelAlreadyUsed(newName, mXObjects));
+
 		AddImageXObjectMappingWithName(inImageXObject,newName);
 		return newName;
 	}
@@ -132,8 +146,12 @@ std::string ResourcesDictionary::AddExtGStateMapping(ObjectIDType inExtGStateID)
 {
     if(inExtGStateID == 0)
     {
-        std::string newName = scGS + ULong(mExtGStatesCount+1).ToString();
-        ++mExtGStatesCount;
+        std::string newName;
+        do{
+            newName = scGS + mRandID + ULong(mExtGStatesCount+1).ToString();
+            ++mExtGStatesCount;
+        }while(isLabelAlreadyUsed(newName, mExtGStates));
+
         return newName;
     }
     else 
@@ -142,8 +160,12 @@ std::string ResourcesDictionary::AddExtGStateMapping(ObjectIDType inExtGStateID)
         
         if(it == mXObjects.end())
         {
-            std::string newName = scGS + ULong(mExtGStatesCount+1).ToString();
-            ++mExtGStatesCount;
+            std::string newName;
+            do{
+                newName = scGS + mRandID + ULong(mExtGStatesCount+1).ToString();
+                ++mExtGStatesCount;
+            }while(isLabelAlreadyUsed(newName, mExtGStates));
+
             it = mExtGStates.insert(ObjectIDTypeToStringMap::value_type(inExtGStateID,newName)).first;
         }
         return it->second;
@@ -170,8 +192,12 @@ std::string ResourcesDictionary::AddImageXObjectMapping(ObjectIDType inImageXObj
 {
     if(inImageXObjectID == 0)
     {
-        std::string newName = scIM + ULong(mImageXObjectsCount+1).ToString();
-        ++mImageXObjectsCount;
+        std::string newName;
+        do{
+            newName = scIM + mRandID + ULong(mImageXObjectsCount+1).ToString();
+            ++mImageXObjectsCount;
+        }while(isLabelAlreadyUsed(newName, mXObjects));
+
         return newName;
     }
     else 
@@ -180,8 +206,12 @@ std::string ResourcesDictionary::AddImageXObjectMapping(ObjectIDType inImageXObj
         
         if(it == mXObjects.end())
         {
-            std::string newName = scIM + ULong(mImageXObjectsCount+1).ToString();
-            ++mImageXObjectsCount;
+            std::string newName;
+            do{
+                newName = scIM + mRandID + ULong(mImageXObjectsCount+1).ToString();
+                ++mImageXObjectsCount;
+            }while(isLabelAlreadyUsed(newName, mXObjects));
+
             it = mXObjects.insert(ObjectIDTypeToStringMap::value_type(inImageXObjectID,newName)).first;
         }
         return it->second;
@@ -203,8 +233,12 @@ std::string ResourcesDictionary::AddFontMapping(ObjectIDType inFontObjectID)
 {
     if(inFontObjectID == 0)
     {
-        std::string newName = scFN + ULong(mFontsCount+1).ToString();
-        ++mFontsCount;
+        std::string newName ;
+        do{
+            newName = scFN + mRandID + ULong(mFontsCount+1).ToString();
+            ++mFontsCount;
+        }while(isLabelAlreadyUsed(newName, mFonts));
+
         return newName;
     }
     else 
@@ -213,8 +247,12 @@ std::string ResourcesDictionary::AddFontMapping(ObjectIDType inFontObjectID)
         
         if(it == mFonts.end())
         {
-            std::string newName = scFN + ULong(mFontsCount+1).ToString();
-            ++mFontsCount;
+            std::string newName;
+            do{
+                newName = scFN + mRandID + ULong(mFontsCount+1).ToString();
+                ++mFontsCount;
+            }while(isLabelAlreadyUsed(newName, mFonts));
+
             it = mFonts.insert(ObjectIDTypeToStringMap::value_type(inFontObjectID,newName)).first;
         }
         return it->second;
@@ -243,8 +281,12 @@ std::string ResourcesDictionary::AddColorSpaceMapping(ObjectIDType inColorspaceI
 {
     if(inColorspaceID == 0)
     {
-        std::string newName = scCS + ULong(mColorSpacesCount+1).ToString();
-        ++mColorSpacesCount;
+        std::string newName;
+        do{
+            newName = scCS + mRandID + ULong(mColorSpacesCount+1).ToString();
+            ++mColorSpacesCount;
+        }while(isLabelAlreadyUsed(newName, mColorSpaces));
+
         return newName;
     }
     else 
@@ -253,8 +295,12 @@ std::string ResourcesDictionary::AddColorSpaceMapping(ObjectIDType inColorspaceI
         
         if(it == mColorSpaces.end())
         {
-            std::string newName = scCS + ULong(mColorSpacesCount+1).ToString();
-            ++mColorSpacesCount;
+            std::string newName;
+            do{
+                newName = scCS + mRandID + ULong(mColorSpacesCount+1).ToString();
+                ++mColorSpacesCount;
+            }while(isLabelAlreadyUsed(newName, mColorSpaces));
+
             it = mColorSpaces.insert(ObjectIDTypeToStringMap::value_type(inColorspaceID,newName)).first;
         }
         return it->second;
@@ -273,8 +319,12 @@ std::string ResourcesDictionary::AddPatternMapping(ObjectIDType inPatternID)
 {
     if(inPatternID == 0)
     {
-        std::string newName = scPT + ULong(mPatternsCount+1).ToString();
-        ++mPatternsCount;
+        std::string newName;
+        do{
+            newName = scPT + mRandID + ULong(mPatternsCount+1).ToString();
+            ++mPatternsCount;
+        }while(isLabelAlreadyUsed(newName, mPatterns));
+
         return newName;
     }
     else 
@@ -283,8 +333,12 @@ std::string ResourcesDictionary::AddPatternMapping(ObjectIDType inPatternID)
         
         if(it == mPatterns.end())
         {
-            std::string newName = scPT + ULong(mPatternsCount+1).ToString();
-            ++mPatternsCount;
+            std::string newName;
+            do{
+                newName = scPT + mRandID + ULong(mPatternsCount+1).ToString();
+                ++mPatternsCount;
+            }while(isLabelAlreadyUsed(newName, mPatterns));
+
             it = mPatterns.insert(ObjectIDTypeToStringMap::value_type(inPatternID,newName)).first;
         }
         return it->second;
@@ -304,8 +358,12 @@ std::string ResourcesDictionary::AddPropertyMapping(ObjectIDType inPropertyID)
 {
     if(inPropertyID == 0)
     {
-        std::string newName = scPP + ULong(mPropertiesCount+1).ToString();
-        ++mPropertiesCount;
+        std::string newName;
+        do{
+            newName = scPP + mRandID + ULong(mPropertiesCount+1).ToString();
+            ++mPropertiesCount;
+        }while(isLabelAlreadyUsed(newName, mProperties));
+
         return newName;
     }
     else 
@@ -314,8 +372,11 @@ std::string ResourcesDictionary::AddPropertyMapping(ObjectIDType inPropertyID)
         
         if(it == mProperties.end())
         {
-            std::string newName = scPP + ULong(mPropertiesCount+1).ToString();
-            ++mPropertiesCount;
+            std::string newName;
+            do{
+                newName = scPP + mRandID + ULong(mPropertiesCount+1).ToString();
+                ++mPropertiesCount;
+            }while(isLabelAlreadyUsed(newName, mProperties));
             it = mProperties.insert(ObjectIDTypeToStringMap::value_type(inPropertyID,newName)).first;
         }
         return it->second;
@@ -334,8 +395,12 @@ std::string ResourcesDictionary::AddXObjectMapping(ObjectIDType inXObjectID)
 {
     if(inXObjectID == 0)
     {
-        std::string newName = scXO + ULong(mGenericXObjectsCount+1).ToString();
-        ++mGenericXObjectsCount;
+        std::string newName;
+        do{
+            newName = scXO + mRandID + ULong(mGenericXObjectsCount+1).ToString();
+            ++mGenericXObjectsCount;
+        }while(isLabelAlreadyUsed(newName, mXObjects));
+
         return newName;
     }
     else 
@@ -344,8 +409,12 @@ std::string ResourcesDictionary::AddXObjectMapping(ObjectIDType inXObjectID)
         
         if(it == mXObjects.end())
         {
-            std::string newName = scXO + ULong(mGenericXObjectsCount+1).ToString();
-            ++mGenericXObjectsCount;
+            std::string newName;
+            do{
+                newName = scXO + mRandID + ULong(mGenericXObjectsCount+1).ToString();
+                ++mGenericXObjectsCount;
+            }while(isLabelAlreadyUsed(newName, mXObjects));
+
             it = mXObjects.insert(ObjectIDTypeToStringMap::value_type(inXObjectID,newName)).first;
         }
         return it->second;
@@ -364,8 +433,12 @@ std::string ResourcesDictionary::AddShadingMapping(ObjectIDType inShadingID)
 {
     if(inShadingID == 0)
     {
-        std::string newName = scSH + ULong(mShadingCount+1).ToString();
-        ++mShadingCount;
+        std::string newName;
+        do{
+            newName = scSH + mRandID + ULong(mShadingCount+1).ToString();
+            ++mShadingCount;
+        }while(isLabelAlreadyUsed(newName, mShading));
+
         return newName;
     }
     else 
@@ -374,8 +447,12 @@ std::string ResourcesDictionary::AddShadingMapping(ObjectIDType inShadingID)
         
         if(it == mShading.end())
         {
-            std::string newName = scSH + ULong(mShadingCount+1).ToString();
-            ++mShadingCount;
+            std::string newName;
+            do{
+                newName = scSH + mRandID + ULong(mShadingCount+1).ToString();
+                ++mShadingCount;
+            }while(isLabelAlreadyUsed(newName, mShading));
+
             it = mShading.insert(ObjectIDTypeToStringMap::value_type(inShadingID,newName)).first;
         }
         return it->second;
@@ -385,4 +462,31 @@ std::string ResourcesDictionary::AddShadingMapping(ObjectIDType inShadingID)
 MapIterator<ObjectIDTypeToStringMap> ResourcesDictionary::GetShadingsIterator()
 {
 	return MapIterator<ObjectIDTypeToStringMap>(mShading);
+}
+
+// Check if label is in use
+bool ResourcesDictionary::isLabelAlreadyUsed(std::string &label, ObjectIDTypeToStringMap &map){
+    for(auto iterator : map){
+        if(iterator.second == label){
+            return true;
+        }
+    }
+    return false;
+}
+
+// Generate random ID for names
+std::string ResourcesDictionary::generateRandomString(size_t length){
+    static const char alphanum[] =
+            "0123456789"
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            "abcdefghijklmnopqrstuvwxyz";
+    int stringLength = sizeof(alphanum) - 1;
+    srand(time(0));
+    std::string randString;
+    for(unsigned int i = 0; i < length; i++)
+    {
+        randString += alphanum[rand() % stringLength];
+
+    }
+    return randString;
 }

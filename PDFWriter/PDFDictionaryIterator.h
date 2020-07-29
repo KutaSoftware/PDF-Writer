@@ -56,7 +56,7 @@ public:
     {
     }
     std::string GetStrValue(std::string s);
-
+//    EndIndirectObject
 
 
     PDFDictionaryIterator Enter(std::string s);

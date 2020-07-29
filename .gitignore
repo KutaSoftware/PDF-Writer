@@ -14,6 +14,7 @@ BUILD
 BuildLog.htm
 *.obj
 *.idb
+*.idea
 
 _.swp
 
@@ -59,3 +60,6 @@ Downloads
 
 # notes etc.
 etc
+build/*
+build-release/*
+output/*

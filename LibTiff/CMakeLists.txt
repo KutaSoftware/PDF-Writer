@@ -93,6 +93,9 @@ else(IS_XCODE)
     add_library(LibTiff ${LibTiff_OBJECTS})
 endif(IS_XCODE)
 
+set_target_properties(LibTiff_OBJLIB PROPERTIES COMPILE_FLAGS -fPIC)
+set_target_properties(LibTiff PROPERTIES COMPILE_FLAGS -fPIC)
+
 target_link_libraries(LibTiff ${ZLIB_LDFLAGS})
 
 install(TARGETS LibTiff
@@ -103,5 +106,5 @@ install(TARGETS LibTiff
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     DESTINATION include
     FILES_MATCHING
-    PATTERN "*.h"
+    PATTERN "*.h*"
 )
