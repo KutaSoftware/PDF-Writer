@@ -22,6 +22,14 @@
 #include "BoxingBase.h"
 #include "PDFImageXObject.h"
 #include <string>
+#ifdef _WIN32
+#include <iostream>
+#include <chrono>
+#include <iomanip>
+#include <ctime>
+#else
+#include "time.h"
+#endif
 
 typedef BoxingBaseWithRW<unsigned long> ULong;
 
@@ -481,7 +489,13 @@ std::string ResourcesDictionary::generateRandomString(size_t length){
             "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
             "abcdefghijklmnopqrstuvwxyz";
     int stringLength = sizeof(alphanum) - 1;
+#ifdef _WIN32
+    auto now = std::chrono::high_resolution_clock::now();
+    auto seed = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
+    srand(seed);
+#else
     srand(time(0));
+#endif
     std::string randString;
     for(unsigned int i = 0; i < length; i++)
     {
