@@ -42,9 +42,11 @@ xcode/Build
 xcode/DerivedData
 .DS_Store
 
-#VSCode unswated#
+#VSCode unwanted#
 #################
 .vscode
+.vs/
+/CMakeSettings.json
 
 #unwanted other sources #
 ########################
@@ -62,4 +64,6 @@ Downloads
 etc
 build/*
 build-release/*
-output/*
+/output
+/out
+
