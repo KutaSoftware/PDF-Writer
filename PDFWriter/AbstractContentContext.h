@@ -153,6 +153,13 @@ public:
 		eOverflow
 	};
 
+	enum HAlignment
+	{
+		eLeft,
+		eRight,
+		eCenter
+	};
+
 	struct ImageOptions
 	{
 		EImageTransformation transformationMethod;
@@ -187,7 +194,7 @@ public:
 	void DrawSquare(double inLeft,double inBottom,double inEdge,const GraphicOptions& inOptions=GraphicOptions());
 	void DrawCircle(double inCenterX,double inCenterY,double inRadius,const GraphicOptions& inOptions=GraphicOptions());
 	void DrawPath(const DoubleAndDoublePairList& inPathPoints,const GraphicOptions& inOptions=GraphicOptions());
-	void WriteText(double inX,double inY,const std::string& inText,const TextOptions& inOptions);
+	void WriteText(double inX,double inY,const std::string& inText,const TextOptions& inOptions,HAlignment inAlignment=eLeft);
 	static unsigned long ColorValueForName(const std::string& inColorName);
 	void DrawImage(double inX,double inY,const std::string& inImagePath,const ImageOptions& inOptions=ImageOptions());
 	void DrawImageProportional(double inX,double inY,double inWidth,const std::string& inImagePath);

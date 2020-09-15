@@ -1417,17 +1417,30 @@ void AbstractContentContext::FinishPath(const GraphicOptions& inOptions)
 }
 
 
-void AbstractContentContext::WriteText(double inX,double inY,const std::string& inText,const TextOptions& inOptions)
+void AbstractContentContext::WriteText(double inX,double inY,const std::string& inText,const TextOptions& inOptions,HAlignment inAlignment)
 {
     BT();
     SetupColor(inOptions);
 	if(inOptions.font)
 	{
 		Tf(inOptions.font,inOptions.fontSize);
+		if (inAlignment != eLeft)
+		{
+			double advance = inOptions.font->CalculateTextAdvance(inText, inOptions.fontSize);
+			if (inAlignment == eRight)
+				inX -= advance;
+			else if (inAlignment == eCenter)
+				inX -= advance/2;
+		}
+
 		Tm(1,0,0,1,inX,inY);
 	}
 	else
+	{
+		if (inAlignment != eLeft)
+			TRACE_LOG("WriteText() with alignment other than eLeft requires a font");
 		Tm(inOptions.fontSize,0,0,inOptions.fontSize,inX,inY);
+	}
 	Tj(inText);
     ET();
 }
