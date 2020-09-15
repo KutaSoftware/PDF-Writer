@@ -190,6 +190,7 @@ public:
 	void WriteText(double inX,double inY,const std::string& inText,const TextOptions& inOptions);
 	static unsigned long ColorValueForName(const std::string& inColorName);
 	void DrawImage(double inX,double inY,const std::string& inImagePath,const ImageOptions& inOptions=ImageOptions());
+	void DrawImageProportional(double inX,double inY,double inWidth,const std::string& inImagePath);
 
 
 	// PDF Operators. For explanations on the meanings of each operator read Appendix A "Operator Summary" of the PDF Reference Manual (1.7)

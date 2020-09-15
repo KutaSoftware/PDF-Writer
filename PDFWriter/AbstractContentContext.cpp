@@ -1488,3 +1488,12 @@ void AbstractContentContext::DrawImage(double inX,double inY,const std::string& 
     Q();
 
 }
+
+void AbstractContentContext::DrawImageProportional(double inX, double inY, double inWidth, const std::string& inImagePath)
+{
+	ImageOptions options;
+	options.transformationMethod = eFit;     // Fit to bounding box
+	options.fitProportional = true;          // Keep height proportional to width
+	options.boundingBoxWidth = inWidth;
+	DrawImage(inX, inY, inImagePath, options);
+}
