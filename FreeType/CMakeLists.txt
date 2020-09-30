@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 2.6) 
+cmake_minimum_required (VERSION 3.1)
 project(FreeType)
 
 set(FREETYPE_INCLUDE_DIRS ${FreeType_SOURCE_DIR}/include PARENT_SCOPE)
@@ -75,8 +75,10 @@ else(IS_XCODE)
     add_library(FreeType ${FreeType_OBJECTS})
 endif(IS_XCODE)
 
-set_target_properties(FreeType_OBJLIB PROPERTIES COMPILE_FLAGS -fPIC)
-set_target_properties(FreeType PROPERTIES COMPILE_FLAGS -fPIC)
+if (NOT CMAKE_C_COMPILER_ID STREQUAL "MSVC")
+    set_target_properties(FreeType_OBJLIB PROPERTIES COMPILE_FLAGS -fPIC)
+    set_target_properties(FreeType PROPERTIES COMPILE_FLAGS -fPIC)
+endif (NOT CMAKE_C_COMPILER_ID STREQUAL "MSVC")
 
 install(TARGETS FreeType
     RUNTIME DESTINATION bin COMPONENT dependencies

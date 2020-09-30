@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 2.6) 
+cmake_minimum_required (VERSION 3.1)
 project(LibTiff)
 
 set(LIBTIFF_INCLUDE_DIRS ${LibTiff_SOURCE_DIR} PARENT_SCOPE)
@@ -93,8 +93,10 @@ else(IS_XCODE)
     add_library(LibTiff ${LibTiff_OBJECTS})
 endif(IS_XCODE)
 
-set_target_properties(LibTiff_OBJLIB PROPERTIES COMPILE_FLAGS -fPIC)
-set_target_properties(LibTiff PROPERTIES COMPILE_FLAGS -fPIC)
+if (NOT CMAKE_C_COMPILER_ID STREQUAL "MSVC")
+    set_target_properties(LibTiff_OBJLIB PROPERTIES COMPILE_FLAGS -fPIC)
+    set_target_properties(LibTiff PROPERTIES COMPILE_FLAGS -fPIC)
+endif (NOT CMAKE_C_COMPILER_ID STREQUAL "MSVC")
 
 target_link_libraries(LibTiff ${ZLIB_LDFLAGS})
 

@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 2.6) 
+cmake_minimum_required (VERSION 3.1)
 project(LibAesgm)
 
 set(LIBAESGM_INCLUDE_DIRS ${LibAesgm_SOURCE_DIR} PARENT_SCOPE)
@@ -35,8 +35,10 @@ else(IS_XCODE)
 endif(IS_XCODE)
 
 
-set_target_properties(LibAesgm_OBJLIB PROPERTIES COMPILE_FLAGS -fPIC)
-set_target_properties(LibAesgm PROPERTIES COMPILE_FLAGS -fPIC)
+if (NOT CMAKE_C_COMPILER_ID STREQUAL "MSVC")
+    set_target_properties(LibAesgm_OBJLIB PROPERTIES COMPILE_FLAGS -fPIC)
+    set_target_properties(LibAesgm PROPERTIES COMPILE_FLAGS -fPIC)
+endif (NOT CMAKE_C_COMPILER_ID STREQUAL "MSVC")
 
 install(TARGETS LibAesgm
     RUNTIME DESTINATION bin COMPONENT dependencies

@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 2.6) 
+cmake_minimum_required (VERSION 3.1)
 project (Zlib)
 
 set(ZLIB_INCLUDE_DIRS ${Zlib_SOURCE_DIR} PARENT_SCOPE)
@@ -46,8 +46,10 @@ else(IS_XCODE)
 endif(IS_XCODE)
 
 
-set_target_properties(Zlib_OBJLIB PROPERTIES COMPILE_FLAGS -fPIC)
-set_target_properties(Zlib PROPERTIES COMPILE_FLAGS -fPIC)
+if (NOT CMAKE_C_COMPILER_ID STREQUAL "MSVC")
+    set_target_properties(Zlib_OBJLIB PROPERTIES COMPILE_FLAGS -fPIC)
+    set_target_properties(Zlib PROPERTIES COMPILE_FLAGS -fPIC)
+endif (NOT CMAKE_C_COMPILER_ID STREQUAL "MSVC")
 
 install(TARGETS Zlib
     RUNTIME DESTINATION bin COMPONENT dependencies
